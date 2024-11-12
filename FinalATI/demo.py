@@ -1,2 +1,0 @@
-print('sbc')
-print('dffd')
