@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Grading Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .drag-area {
+            transition: background-color 0.3s;
+        }
+        .drag-area.dragging {
+            background-color: #e6f7ff;
+        }
+    </style>
+</head>
+<body class="bg-gray-200 p-5">
+
+    <div class="bg-blue-800 text-white p-4 rounded mb-5">
+        <h1 class="text-3xl font-bold" id="subject-name"></h1>
+        <h2 class="text-xl" id="test-name"></h2>
+    </div>
+
+    <div class="flex gap-4">
+        <!-- Drag and Drop Area -->
+        <div class="flex-1 bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg p-5 flex flex-col justify-center items-center drag-area" id="file-upload-area">
+            <h2 class="text-lg font-bold">Drag & Drop Student Work Here</h2>
+            <p class="text-sm text-gray-600">or click to upload</p>
+            <input type="file" id="file-input" multiple class="sr-only" />
+        </div>
+
+        <!-- Results Area -->
+        <div class="flex-1 bg-white border-2 border-red-600 rounded-lg p-5" id="results-area">
+            <h2 class="text-lg font-bold text-red-600">Results</h2>
+            <div id="results-container" class="mt-2 text-center">
+                <h3 class="text-gray-600">No scores available yet.</h3>
+                <p class="text-sm text-gray-500">Please upload student work for grading.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buttons Section -->
+    <div class="mt-5 text-center">
+        <button id="return-home" class="bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700">
+            Return Home
+        </button>
+        <button id="view-answers" class="bg-green-600 text-white font-bold py-2 px-4 rounded hover:bg-green-700 ml-4 hidden">
+            View Answers
+        </button>
+    </div>
+
+    <!-- Answers Section -->
+    <div id="answers-container" class="mt-5 hidden bg-white p-4 rounded shadow">
+        <h3 class="text-lg font-bold">Student Answers</h3>
+        <div id="answers-display" class="mt-2"></div>
+    </div>
+
+    <script>
+        const subjects = [
+            { name: "ATI", test: "Midterm Exam", correctAnswers: "correct_answers.pdf" },
+            { name: "SAD", test: "Final Exam", correctAnswers: "final_answers.pdf" },
+            { name: "SPM", test: "Quiz", correctAnswers: "quiz_answers.pdf" }
+        ];
+
+        const subjectIndex = 0; // Change to dynamically select subject
+        document.getElementById('subject-name').innerText = subjects[subjectIndex].name;
+        document.getElementById('test-name').innerText = subjects[subjectIndex].test;
+
+        const fileUploadArea = document.getElementById('file-upload-area');
+        const fileInput = document.getElementById('file-input');
+        const resultsContainer = document.getElementById('results-container');
+        const viewAnswersButton = document.getElementById('view-answers');
+        const answersContainer = document.getElementById('answers-container');
+        const answersDisplay = document.getElementById('answers-display');
+
+        let studentAnswers = [];
+
+        // Drag and Drop Events
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.add('dragging');
+        });
+
+        fileUploadArea.addEventListener('dragleave', () => {
+            fileUploadArea.classList.remove('dragging');
+        });
+
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('dragging');
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        fileUploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            handleFiles(files);
+        });
+
+        function handleFiles(files) {
+            resultsContainer.innerHTML = ''; // Clear previous results
+            studentAnswers = []; // Reset answers
+            for (const file of files) {
+                const score = Math.floor(Math.random() * 11); // Random score from 0 to 10
+                const studentInfo = {
+                    name: `Student ${Math.floor(Math.random() * 100) + 1}`,
+                    id: `ID${Math.floor(Math.random() * 1000)}`,
+                    class: "10A",
+                    score: score,
+                    answers: generateAnswers() // Generate dummy answers
+                };
+                studentAnswers.push(studentInfo.answers);
+                displayResult(studentInfo);
+            }
+            viewAnswersButton.classList.remove('hidden'); // Show View Answers button
+        }
+
+        function generateAnswers() {
+            return {
+                correct: ["Question 1", "Question 3"], // Example correct answers
+                incorrect: ["Question 2", "Question 4"] // Example incorrect answers
+            };
+        }
+
+        function displayResult(student) {
+            resultsContainer.innerHTML = ''; // Clear previous messages
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'bg-white rounded-lg p-4 mb-2';
+            resultDiv.innerHTML = `
+                <div class="border-b-2 border-red-600 mb-2">
+                    <strong class="text-red-600">${student.name} (${student.id})</strong>
+                </div>
+                <p>Class: ${student.class}</p>
+                <p class="text-lg font-bold text-red-600">Score: ${student.score} / 10</p>
+            `;
+            resultsContainer.appendChild(resultDiv);
+        }
+
+        // Return Home Button Functionality
+        document.getElementById('return-home').addEventListener('click', () => {
+            window.location.href = '/';
+        });
+
+        // View Answers Button Functionality
+        viewAnswersButton.addEventListener('click', () => {
+            answersContainer.classList.toggle('hidden'); // Toggle visibility
+            if (!answersContainer.classList.contains('hidden')) {
+                displayAnswers();
+            }
+        });
+
+        function displayAnswers() {
+            answersDisplay.innerHTML = ''; // Clear previous answers
+            studentAnswers.forEach((answers, index) => {
+                const answerDiv = document.createElement('div');
+                answerDiv.className = 'mt-2 p-2 border rounded';
+                answerDiv.innerHTML = `
+                    <h4 class="font-bold">Student ${index + 1} Answers:</h4>
+                    <p class="text-green-600">Correct Answers: ${answers.correct.join(', ')}</p>
+                    <p class="text-red-600">Incorrect Answers: ${answers.incorrect.join(', ')}</p>
+                `;
+                answersDisplay.appendChild(answerDiv);
+            });
+        }
+    </script>
+</body>
+</html>
