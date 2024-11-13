@@ -23,6 +23,25 @@
         }
         .popup {
             position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%; /* Responsive width */
+            max-width: 500px; /* Max width for larger screens */
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000; 
+            display: none; /* Initially hidden */
+            flex-direction: column; 
+            overflow-y: auto;
+            border-radius: 8px; /* Rounded corners */
+        }
+        .popup.show {
+            display: flex; /* Show popup when 'show' class is added */
+        }
+        .view-detail-popup {
+            position: fixed;
             top: 0;
             right: -58%; 
             width: 50%; 
@@ -34,18 +53,23 @@
             z-index: 1000; 
             display: flex;
             flex-direction: column; 
-            overflow-y: auto; /* Allow vertical scrolling */
+            overflow-y: auto;
         }
-        .popup.show {
+        .view-detail-popup.show {
             right: 0; 
         }
-        /* Hide scrollbar */
-        .popup::-webkit-scrollbar {
-            display: none; /* Hide scrollbar for WebKit browsers */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            z-index: 999; /* Behind the popup */
+            display: none; /* Initially hidden */
         }
-        .popup {
-            -ms-overflow-style: none;  /* Hide scrollbar for Internet Explorer and Edge */
-            scrollbar-width: none;  /* Hide scrollbar for Firefox */
+        .popup-overlay.show {
+            display: block; /* Show overlay when 'show' class is added */
         }
     </style>
 </head>
@@ -53,6 +77,7 @@
 
     <div class="w-full bg-blue-800 text-white p-5 mb-5 h-auto">
         <h1 class="text-3xl font-bold text-center">Subject Management</h1>
+        <div id="current-subject" class="mt-3 p-4 bg-blue-700 rounded text-center text-lg"></div>
     </div>
 
     <div id="subject-list-container" class="subject-list-container w-full p-5">
@@ -60,11 +85,53 @@
             <!-- Subjects will be added here -->
         </div>
         
-        <button onclick="addSubject()" class="mt-5 text-white text-center bg-blue-800 py-2 px-4 rounded">Add Subject</button>
+        <button onclick="openAddSubjectPopup()" class="mt-5 text-white text-center bg-blue-800 py-2 px-4 rounded">Add Subject</button>
     </div>
     
+    <!-- Overlay for popups -->
+    <div id="popup-overlay" class="popup-overlay"></div>
+
+    <!-- Popup for adding a subject -->
+    <div id="add-subject-popup" class="container mx-auto p-4 popup border border-blue-500 shadow-lg">
+        <h1 class="text-3xl font-bold text-blue-600 mb-6">Add New Subject</h1>
+    
+        <form class="grid grid-cols-1 gap-6">
+            <!-- Subject Name -->
+            <div class="p-2">
+                <input type="text" id="new-subject-name" placeholder="Subject Name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#8c0327] focus:ring-[#8c0327] focus:ring-opacity-50 p-2" style="background-color: #f6f6f6;">
+            </div>
+    
+            <!-- Test Name -->
+            <div class="p-2">
+                <input type="text" id="new-test-name" placeholder="Test Name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#8c0327] focus:ring-[#8c0327] focus:ring-opacity-50 p-2" style="background-color: #f6f6f6;">
+            </div>
+    
+            <!-- Upload Correct Answer -->
+            <div class="p-2">
+                <label for="correct-answer-upload" class="block w-full h-48 border-2 border-dashed border-gray-300 rounded-md cursor-pointer flex flex-col items-center justify-center bg-[#f6f6f6] hover:bg-gray-50">
+                    <div class="text-center">
+                        <button type="button" class="bg-red-600 hover:bg-[#6b0220] text-white rounded-full py-2 px-4">Upload Correct Answer</button>
+                        <p class="text-gray-500 mt-2">or drag file here</p>
+                        <p class="text-gray-500 text-sm mt-1">PDF, DOC, TXT</p>
+                    </div>
+                </label>
+                <input id="correct-answer-upload" name="correct-answer" type="file" accept=".pdf,.doc,.txt" class="sr-only">
+            </div>
+    
+            <!-- Confirm and Close Buttons -->
+            <div class="col-span-full mt-6 p-2">
+                <button onclick="confirmAddSubject()" type="button" class="block w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-4 rounded-full">
+                    Confirm
+                </button>
+                <button onclick="closeAddSubjectPopup()" type="button" class="block w-full bg-red-600 hover:bg-red-800 text-white font-bold py-3 px-4 rounded-full mt-2">
+                    Close
+                </button>
+            </div>
+        </form>
+    </div>
+
     <!-- Popup for subject information -->
-    <div id="popup" class="my-4 mr-1 popup border border-blue-500 shadow-lg p-10 rounded-lg bg-white">
+    <div id="view-detail-popup" class="view-detail-popup border border-blue-500 shadow-lg rounded-lg my-4">
         <h2 class="text-3xl font-bold text-blue-600 mb-3" id="popup-title"></h2>
 
         <div class="mb-4">
@@ -79,13 +146,13 @@
             </div>
         </div>
 
-        <h3 class="font-semibold text-lg mb-2">Student ranking</h3>
+        <h3 class="font-semibold text-lg mb-2">Student Ranking</h3>
         <div id="student-ranking" class="bg-gray-50 rounded shadow overflow-y-auto" style="max-height: 200px;">
             <!-- Student ranking will be added here -->
         </div>
 
         <button onclick="viewDetail()" class="mt-3 bg-blue-600 text-white py-1 px-2 rounded hover:bg-blue-700">View Detail</button>
-        <button onclick="closePopup()" class="mt-3 bg-blue-700 text-white py-1 px-2 rounded hover:bg-blue-800">Close</button>
+        <button onclick="closeViewDetailPopup()" class="mt-3 bg-blue-700 text-white py-1 px-2 rounded hover:bg-blue-800">Close</button>
     </div>
 
     <script>
@@ -95,11 +162,31 @@
             { name: "SPM", scores: [] }
         ];
 
-        function addSubject() {
-            const subjectName = prompt("Nhập tên môn học:");
-            if (subjectName) {
+        function openAddSubjectPopup() {
+            document.getElementById('popup-overlay').classList.add('show');
+            document.getElementById('add-subject-popup').classList.add('show');
+        }
+
+        function closeAddSubjectPopup() {
+            document.getElementById('popup-overlay').classList.remove('show');
+            document.getElementById('add-subject-popup').classList.remove('show');
+            document.getElementById('new-subject-name').value = '';
+            document.getElementById('new-test-name').value = '';
+            document.getElementById('correct-answer-upload').value = '';
+        }
+
+        function confirmAddSubject() {
+            const subjectName = document.getElementById('new-subject-name').value;
+            const testName = document.getElementById('new-test-name').value;
+            const correctAnswerFile = document.getElementById('correct-answer-upload').files[0];
+
+            if (subjectName && testName && correctAnswerFile) {
                 subjects.push({ name: subjectName, scores: [] });
+                alert("Subject created successfully!");
                 renderSubjects();
+                closeAddSubjectPopup();
+            } else {
+                alert("Please fill in all fields.");
             }
         }
 
@@ -111,7 +198,7 @@
                 subjectDiv.className = "subject-item cursor-pointer";
                 subjectDiv.innerHTML = `
                     <h2 class="text-xl font-semibold">${subject.name}</h2>
-                    <button onclick="editSubject(${index})" class="mt-2 bg-blue-800 text-white py-1 px-3 rounded">Edit</button>
+                    <button onclick="markSubject(${index})" class="mt-2 bg-blue-800 text-white py-1 px-3 rounded">Mark</button>
                     <button onclick="deleteSubject(${index})" class="mt-2 bg-red-600 text-white py-1 px-3 rounded">Delete</button>
                 `;
                 subjectDiv.onclick = () => showSubjectInfo(index);
@@ -119,8 +206,8 @@
             });
         }
 
-        function editSubject(index) {
-            window.location.href = `/detail/${subjectDetail.name}`; 
+        function markSubject(index) {
+            window.location.href = `/grading`; 
         }
 
         function deleteSubject(index) {
@@ -132,10 +219,9 @@
             const subject = subjects[index];
             const studentScores = Array.from({ length: 10 }, (_, idx) => ({
                 studentID: `Student_${idx + 1}`,
-                score: Math.floor(Math.random() * 11) // Scores from 0 to 10
+                score: Math.floor(Math.random() * 11)
             }));
 
-            // Calculate average, highest, and lowest scores
             const average = studentScores.length > 0 ? (studentScores.reduce((a, b) => a + b.score, 0) / studentScores.length).toFixed(2) : 0;
             const highest = Math.max(...studentScores.map(s => s.score));
             const lowest = Math.min(...studentScores.map(s => s.score));
@@ -145,9 +231,8 @@
             document.getElementById('highest-score').innerText = highest;
             document.getElementById('lowest-score').innerText = lowest;
 
-            // Update ranking list
             const rankingList = document.getElementById('student-ranking');
-            rankingList.innerHTML = ''; // Clear old content
+            rankingList.innerHTML = '';
             studentScores.sort((a, b) => b.score - a.score).forEach(item => {
                 const studentDiv = document.createElement('div');
                 studentDiv.className = "bg-blue-100 p-2 mb-2 rounded shadow";
@@ -155,21 +240,23 @@
                 rankingList.appendChild(studentDiv);
             });
 
-            // Show popup and shrink subject list
-            document.getElementById('popup').classList.add('show');
+            document.getElementById('current-subject').innerText = `Subject: ${subject.name}`;
+            document.getElementById('view-detail-popup').classList.add('show');
+            document.getElementById('popup-overlay').classList.add('show');
             document.getElementById('subject-list-container').classList.add('subject-list-shrink');
         }
 
-        function closePopup() {
-            document.getElementById('popup').classList.remove('show');
+        function closeViewDetailPopup() {
+            document.getElementById('view-detail-popup').classList.remove('show');
+            document.getElementById('popup-overlay').classList.remove('show');
             document.getElementById('subject-list-container').classList.remove('subject-list-shrink');
+            document.getElementById('current-subject').innerText = ''; 
         }
 
         function viewDetail() {
             window.location.href = '/detail';
         }
 
-        // Render initial subjects
         renderSubjects();
     </script>
 </body>

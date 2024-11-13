@@ -45,6 +45,7 @@
                     <th class="border border-gray-300 px-4 py-2">No.</th>
                     <th class="border border-gray-300 px-4 py-2">Student Name</th>
                     <th class="border border-gray-300 px-4 py-2">Student ID</th>
+                    <th class="border border-gray-300 px-4 py-2">Student Class</th> <!-- New column -->
                     <th class="border border-gray-300 px-4 py-2">Score</th>
                     <th class="border border-gray-300 px-4 py-2">Action</th>
                 </tr>
@@ -62,11 +63,11 @@
         let subjectDetail = {
             name: "ATI",
             scores: [
-                { studentName: "Nguyen Van A", studentID: "Student_1", score: 8 },
-                { studentName: "Tran Thi B", studentID: "Student_2", score: 9 },
-                { studentName: "Le Van C", studentID: "Student_3", score: 6 },
-                { studentName: "Pham Thi D", studentID: "Student_4", score: 10 },
-                { studentName: "Hoang Van E", studentID: "Student_5", score: 7 }
+                { studentName: "Nguyen Van A", studentID: "Student_1", studentClass: "Class A", score: 8 },
+                { studentName: "Tran Thi B", studentID: "Student_2", studentClass: "Class B", score: 9 },
+                { studentName: "Le Van C", studentID: "Student_3", studentClass: "Class A", score: 6 },
+                { studentName: "Pham Thi D", studentID: "Student_4", studentClass: "Class C", score: 10 },
+                { studentName: "Hoang Van E", studentID: "Student_5", studentClass: "Class B", score: 7 }
             ]
         };
 
@@ -99,6 +100,7 @@
                     <td class="text-center border border-gray-300 px-4 py-2">${index + 1}</td>
                     <td class="border border-gray-300 px-4 py-2">${item.studentName}</td>
                     <td class="border border-gray-300 px-4 py-2">${item.studentID}</td>
+                    <td class="border border-gray-300 px-4 py-2">${item.studentClass}</td> <!-- New column -->
                     <td class="border border-gray-300 px-4 py-2">
                         <input type="number" value="${item.score}" onchange="updateScore(${index}, this.value)" class="text-center p-1 w-20" />
                     </td>
