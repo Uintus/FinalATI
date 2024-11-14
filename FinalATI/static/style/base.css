@@ -34,3 +34,6 @@ body {
   position: absolute;
   background-color: #000000a3;
 }
+.hidden {
+  display: none !important;
+}

@@ -82,13 +82,20 @@
                                             systems meet business needs. It involves managing individual workstations,
                                             cloud
                                             environments, and network assets according to robust policies.
-                                            
+
                                         </p>
                                     </div>
                                 </div>
                                 <button class="course--arrow">
                                     <i class="fa-solid fa-chevron-right"></i>
                                 </button>
+                                <div class="course--dots">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                    <div class="course--delete hidden">
+                                        <span>Delete Exam</span>
+                                    </div>
+                                </div>
+
                             </div>
 
 
@@ -106,13 +113,20 @@
                                             systems meet business needs. It involves managing individual workstations,
                                             cloud
                                             environments, and network assets according to robust policies.
-                                            
+
                                         </p>
                                     </div>
                                 </div>
                                 <button class="course--arrow">
                                     <i class="fa-solid fa-chevron-right"></i>
                                 </button>
+                                <div class="course--dots">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                    <div class="course--delete hidden">
+                                        <span>Delete Exam</span>
+                                    </div>
+                                </div>
+
                             </div>
 
 
@@ -130,17 +144,25 @@
                                             systems meet business needs. It involves managing individual workstations,
                                             cloud
                                             environments, and network assets according to robust policies.
-                                            
+
                                         </p>
                                     </div>
                                 </div>
                                 <button class="course--arrow">
                                     <i class="fa-solid fa-chevron-right"></i>
                                 </button>
+                                <div class="course--dots">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                    <div class="course--delete hidden">
+                                        <span>Delete Exam</span>
+                                    </div>
+                                </div>
+
                             </div>
 
 
                         </div>
+
                     </div>
                 </div>
 
@@ -151,9 +173,15 @@
             </div>
         </div>
 
+        <!-- ___________________ADD COURSE EXAM FORM_______________________ -->
+        <div class="popup--dlt"> 
+            <i class="fa-solid fa-xmark dlt_icon"></i>
+            <p>Are you sure you want to delete this exam?</p>
+            <button>DELETE</button>
+        </div>
 
         <!-- ___________________ADD COURSE EXAM FORM_______________________ -->
-         <div class="addCourse__form">
+        <div class="addCourse__form">
             <i class="fa-solid fa-xmark dlt_icon"></i>
             <h1>ADD NEW EXAMINATION</h1>
             <form id="subjectForm">
@@ -161,20 +189,20 @@
                     <label for="subjectName">Subject Name:</label>
                     <input type="text" id="subjectName" required>
                 </div>
-        
+
                 <div class="form-group">
                     <label for="imageLink">Subject Image Link:</label>
                     <input type="url" id="imageLink" required>
                 </div>
-        
+
                 <div class="form-group">
                     <label for="description">Subject Description (Max 50 words):</label>
                     <textarea id="description" rows="4" maxlength="250" required></textarea>
                     <small>(Maximum 50 words)</small>
                 </div>
-        
+
                 <h2>Enter Answers</h2>
-        
+
                 <!-- First row of answers -->
                 <div class="answer-row">
                     <div class="form-group">
@@ -223,7 +251,7 @@
                         </select>
                     </div>
                 </div>
-        
+
                 <!-- Second row of answers -->
                 <div class="answer-row">
                     <div class="form-group">
@@ -272,17 +300,17 @@
                         </select>
                     </div>
                 </div>
-        
+
                 <button type="submit">Add</button>
             </form>
-         </div>
+        </div>
 
-         <div class="hidden_layer"></div>
+        <div class="hidden_layer"></div>
     </div>
 
 
     <!-- ___________________JS_______________________ -->
-     <script src="../static/utility/homePage.js"></script>
+    <script src="../static/utility/homePage.js"></script>
 </body>
 
 </html>
