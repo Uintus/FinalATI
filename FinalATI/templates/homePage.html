@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examiner - Home</title>
+    <link rel="icon" href="../static/img/icon.png" type="image/png">
+
+    <link rel="stylesheet" href="../static/fonts/fontawesome-free-6.5.2-web/css/all.css">
+    <link rel="stylesheet" href="../static/fonts/themify-icons/themify-icons.css">
+
+    <link rel="stylesheet" href="../static/style/base.css">
+    <link rel="stylesheet" href="../static/style/homePage.css">
+
+
+</head>
+
+<body>
+    <div class="container">
+        <!-- ___________________NAVIGATE PART_______________________ -->
+        <div class="navigate">
+            <img src="../static/img/icon_2.png" alt="logo" class="logo_page">
+            <h1>Examiner</h1>
+            <div class="items">
+                <div class="item_box">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Home</span>
+                </div>
+                <div class="item_box">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>Student List</span>
+                </div>
+                <div class="item_box">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Setting</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ___________________CONTENT PART_______________________ -->
+        <div class="content">
+            <div class="content__header">
+                <h1>All Examinations</h1>
+                <div class="header__search">
+                    <img src="../static/img/search.png" alt="">
+                </div>
+                <img src="../static/img/notification.png" alt="notif">
+            </div>
+
+            <div class="content__detail">
+                <div class="detail--left">
+                    <div class="detail--left__filter row">
+                        <p>Filter by:</p>
+                        <div class="filler--final filter">
+                            <p>Final Exams</p>
+                        </div>
+                        <div class="filter--midterm filter">
+                            <p>Midterm Exams</p>
+                        </div>
+                        <div class="filter--others filter">
+                            <p>Other Exams</p>
+                        </div>
+                    </div>
+
+                    <div class="detail--left__addCourse">
+                        <i class="fa-solid fa-plus"></i>
+                    </div>
+
+                    <div class="detail--left__courses column">
+                        <div class="course row" id="0">
+                            <div class="course__box row">
+                                <div class="course__img">
+                                    <img src="../static/img/artificial-intelligence.png" alt="course">
+                                </div>
+                                <div class="course__content column">
+                                    <p class="course--name">System Managemnt</p>
+                                    <div class="course--desc">
+                                        <p>System management is the process of ensuring enterprise
+                                            IT
+                                            systems meet business needs. It involves managing individual workstations,
+                                            cloud
+                                            environments, and network assets according to robust policies.
+                                            
+                                        </p>
+                                    </div>
+                                </div>
+                                <button class="course--arrow">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            </div>
+
+
+                        </div>
+                        <div class="course row" id="0">
+                            <div class="course__box row">
+                                <div class="course__img">
+                                    <img src="../static/img/artificial-intelligence.png" alt="course">
+                                </div>
+                                <div class="course__content column">
+                                    <p class="course--name">System Managemnt</p>
+                                    <div class="course--desc">
+                                        <p>System management is the process of ensuring enterprise
+                                            IT
+                                            systems meet business needs. It involves managing individual workstations,
+                                            cloud
+                                            environments, and network assets according to robust policies.
+                                            
+                                        </p>
+                                    </div>
+                                </div>
+                                <button class="course--arrow">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            </div>
+
+
+                        </div>
+                        <div class="course row" id="0">
+                            <div class="course__box row">
+                                <div class="course__img">
+                                    <img src="../static/img/artificial-intelligence.png" alt="course">
+                                </div>
+                                <div class="course__content column">
+                                    <p class="course--name">System Managemnt</p>
+                                    <div class="course--desc">
+                                        <p>System management is the process of ensuring enterprise
+                                            IT
+                                            systems meet business needs. It involves managing individual workstations,
+                                            cloud
+                                            environments, and network assets according to robust policies.
+                                            
+                                        </p>
+                                    </div>
+                                </div>
+                                <button class="course--arrow">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail--right">
+                    <div class="detail--right__calender"></div>
+                    <div class="detial--right__topStd"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ___________________ADD COURSE EXAM FORM_______________________ -->
+         <div class="addCourse__form">
+            <i class="fa-solid fa-xmark dlt_icon"></i>
+            <h1>ADD NEW EXAMINATION</h1>
+            <form id="subjectForm">
+                <div class="form-group">
+                    <label for="subjectName">Subject Name:</label>
+                    <input type="text" id="subjectName" required>
+                </div>
+        
+                <div class="form-group">
+                    <label for="imageLink">Subject Image Link:</label>
+                    <input type="url" id="imageLink" required>
+                </div>
+        
+                <div class="form-group">
+                    <label for="description">Subject Description (Max 50 words):</label>
+                    <textarea id="description" rows="4" maxlength="250" required></textarea>
+                    <small>(Maximum 50 words)</small>
+                </div>
+        
+                <h2>Enter Answers</h2>
+        
+                <!-- First row of answers -->
+                <div class="answer-row">
+                    <div class="form-group">
+                        <label for="answer1">Question 1</label>
+                        <select id="answer1">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="answer2">Question 2</label>
+                        <select id="answer2">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="answer3">Question 3</label>
+                        <select id="answer3">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="answer4">Question 4</label>
+                        <select id="answer4">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="answer5">Question 5</label>
+                        <select id="answer5">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                </div>
+        
+                <!-- Second row of answers -->
+                <div class="answer-row">
+                    <div class="form-group">
+                        <label for="answer6">Question 6</label>
+                        <select id="answer6">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="answer7">Question 7</label>
+                        <select id="answer7">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="answer8">Question 8</label>
+                        <select id="answer8">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="answer9">Question 9</label>
+                        <select id="answer9">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="answer10">Question 10</label>
+                        <select id="answer10">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                </div>
+        
+                <button type="submit">Add</button>
+            </form>
+         </div>
+
+         <div class="hidden_layer"></div>
+    </div>
+
+
+    <!-- ___________________JS_______________________ -->
+     <script src="../static/utility/homePage.js"></script>
+</body>
+
+</html>

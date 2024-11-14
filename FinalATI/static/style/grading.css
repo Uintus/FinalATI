@@ -1,0 +1,6 @@
+.drag-area {
+    transition: background-color 0.3s;
+}
+.drag-area.dragging {
+    background-color: #e6f7ff;
+}

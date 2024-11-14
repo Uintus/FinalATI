@@ -3,3 +3,4 @@ numpy==2.0.2
 tensorflow==2.18.0
 matplotlib==3.9.2
 Flask==3.0.3
+mysql-connector-python==9.1.0

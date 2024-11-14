@@ -1,0 +1,36 @@
+:root {
+  --main-color--: #5955b3;
+}
+* {
+  box-sizing: inherit;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+}
+html {
+  /* dựa theo khung trình duyệt */
+  font-size: 62.5%;
+  line-height: 1.6rem;
+  font-family: "Roboto", sans-serif;
+  box-sizing: border-box;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  overflow: hidden;
+  scrollbar-width: none;
+}
+
+.blur {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #000000a3;
+}
