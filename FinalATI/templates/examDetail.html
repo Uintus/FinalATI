@@ -17,6 +17,7 @@
 
 <body>
     <div class="container">
+        <div class="hidden_layer"></div>
         <!-- ___________________NAVIGATE PART_______________________ -->
         <div class="navigate">
             <img src="../static/img/icon_2.png" alt="logo" class="logo_page">
@@ -296,9 +297,24 @@
                     <input type="file" id="fileInput" multiple style="display: none;">
                 </div>
             </div>
+
+            
         </div>
 
+        <!-- ___________________DELETE STD EXAM_______________________ -->
+        <div class="popup--dlt"> 
+            <i class="fa-solid fa-xmark"></i>
+            <p>Do you want to delete this student's exam?</p>
+            <button>DELETE</button>
+        </div>
 
+        <!-- ___________________EDIT STD SCORE_______________________ -->
+        <div class="popup--edit"> 
+            <i class="fa-solid fa-xmark"></i>
+            <p>Change score from <span>0 </span> to:</p>
+            <input type="text" name="ChangeScore" id="">
+            <button>CONFIRM</button>
+        </div>
 
 
     </div>

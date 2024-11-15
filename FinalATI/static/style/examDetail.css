@@ -214,3 +214,88 @@ td {
 .upload__box.dragover {
     background-color: rgba(0, 0, 0, 0.1); /* Hiệu ứng khi kéo tệp vào */
 }
+
+
+
+/* ___________________POPUP DLT PART_________________ */
+.popup--dlt {
+    display: flex;
+    width: 200px;
+    height: auto;
+    position: absolute;
+    top: -150px;
+    /* top: 200px; */
+    color: black;
+    background-color: white;
+    font-size: 15px;
+    flex-direction: column;
+    z-index: 11112;
+    border-radius: 5px;
+  }
+  .popup--dlt p {
+    margin: 25px 15px 15px 15px;
+  }
+  .popup--dlt i {
+    position: inherit;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+  }
+  .popup--dlt button {
+    background-color: red;
+    border: none;
+    height: 30px;
+    color: white;
+    cursor: pointer;
+  }
+  .popup--dlt button:hover {
+    background-color: rgb(244, 87, 87);
+  }
+
+  /* ___________________EDIT STD SCORE_______________________  */
+  .popup--edit {
+    display: flex;
+    width: 200px;
+    height: auto;
+    position: absolute;
+    top: -150px;
+    /* top: 200px; */
+    color: black;
+    background-color: white;
+    font-size: 15px;
+    flex-direction: column;
+    z-index: 11112;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .popup--edit p {
+    margin: 25px 15px 15px 15px;
+  }
+  .popup--edit i {
+    position: inherit;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+  }
+  .popup--edit button {
+    background-color: var(--main-color--);
+    border: none;
+    height: 30px;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+  }
+  .popup--edit span {
+    color: red;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .popup--edit input{
+    margin-bottom: 15px;
+    width: 40px;
+  }
+  .popup--edit button:active {
+    background-color: #5955b3db;
+  }
