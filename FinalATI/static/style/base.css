@@ -40,6 +40,8 @@ body {
   height: 100%;
   position: absolute;
   background-color: #000000a3;
+  position: absolute;
+  z-index: 11111;
 }
 .hidden {
   display: none !important;
