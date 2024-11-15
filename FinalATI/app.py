@@ -66,10 +66,6 @@ def delete_subject():
     connection.close()
     return redirect('/')
 
-@app.route("/grading")
-def render_grading():
-    add_exam = execute_query("INSERT INTO enrollment (subject_id, student_id, score) VALUES (%s, %s, %s)", (26, 22, 0))
-    return redirect('/')
 
 @app.route("/detail")
 def render_detail_page():
@@ -90,13 +86,9 @@ def render_detail_page():
             is_student_exist  = True
             break
     
-    print(is_student_exist)
-
-    # if is_student_exist == False:
-    new_student = execute_query("SELECT * FROM students WHERE msv = %s", (msv,))
-    print(subject_id)
-    print(new_student[0]['id'])
-    # add_exam = execute_query("INSERT INTO enrollment(subject_id, student_id, score) VALUES (%s, %s, %s)", (subject_id, new_student[0]['id'], 0))
+    if is_student_exist == False:
+        new_student = execute_query("SELECT * FROM students WHERE msv = %s", (msv,))
+        execute_insert_query("INSERT INTO enrollment(subject_id, student_id, score) VALUES (%s, %s, %s)", (subject_id, new_student[0]['id'], 0))
     
     return render_template("examDetail.html", subject=subject[0], students=students)
 
@@ -121,6 +113,27 @@ def execute_query(query, params=None):
     connection.close()
 
     return result
+
+def execute_insert_query(query, params=None):
+    """
+    Hàm hỗ trợ thực thi truy vấn SQL và trả về kết quả
+    :param query: Câu lệnh SQL
+    :param params: Các tham số SQL, mặc định là None
+    :return: Kết quả truy vấn dưới dạng list các dictionary (mỗi row là 1 dictionary)
+    """
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    # Thực thi truy vấn SQL
+    cursor.execute(query, params)
+
+    # Lấy kết quả
+    connection.commit()
+
+    # Đóng cursor và connection
+    cursor.close()
+    connection.close()
+
 
 if __name__ == '__main__':
     app.run(debug=True)
