@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, redirect
 import mysql.connector
+from components.Model import *
 
 app = Flask(__name__)
+model = trainning_model()
 
 # MySQL Database configuration
 app.config['MYSQL_HOST'] = 'localhost'
@@ -58,11 +60,10 @@ def delete_subject():
     connection = get_db_connection()
     cursor = connection.cursor()
     cursor.execute("DELETE FROM subjects WHERE id = %s", (subject_id,))
+    cursor.execute("DELETE FROM enrollment WHERE subject_id = %s", (subject_id,))
     connection.commit()
     cursor.close()
     connection.close()
-    # result = execute_query("DELETE FROM subjects WHERE id = %s", (subject_id,))
-    # print(result)
     return redirect('/')
 
 @app.route("/grading")
@@ -71,9 +72,33 @@ def render_grading():
 
 @app.route("/detail")
 def render_detail_page():
-    return render_template("detail.html")
+    subject_id = request.args.get("id")
+    subject = execute_query("SELECT * FROM subjects WHERE id = %s", (subject_id,))
+    students = execute_query("SELECT * FROM students INNER JOIN enrollment ON students.id = enrollment.student_id WHERE enrollment.subject_id = %s", (subject_id,))
+    print(students)
+    return render_template("examDetail.html", subject=subject[0], students=students)
 
+def execute_query(query, params=None):
+    """
+    Hàm hỗ trợ thực thi truy vấn SQL và trả về kết quả
+    :param query: Câu lệnh SQL
+    :param params: Các tham số SQL, mặc định là None
+    :return: Kết quả truy vấn dưới dạng list các dictionary (mỗi row là 1 dictionary)
+    """
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
 
+    # Thực thi truy vấn SQL
+    cursor.execute(query, params)
+
+    # Lấy kết quả
+    result = cursor.fetchall()
+
+    # Đóng cursor và connection
+    cursor.close()
+    connection.close()
+
+    return result
 
 if __name__ == '__main__':
     app.run(debug=True)

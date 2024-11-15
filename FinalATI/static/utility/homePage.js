@@ -66,6 +66,12 @@ function handleDeleteExam(id) {
   dltPopup.style.top = "";
   window.location.href = "/delete_subject?id=" + id;
 }
+//_________________________HANDLE EXAM DETAIL__________________________
+const detailArrowBtns = document.querySelectorAll(".course--arrow");
 
-
+detailArrowBtns.forEach((detailArrowBtn) => {
+  detailArrowBtn.addEventListener("click", function () {
+    window.location.href = "/detail?id=" + detailArrowBtn.id;
+  });
+});
 
