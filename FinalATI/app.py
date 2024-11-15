@@ -3,7 +3,7 @@ import mysql.connector
 from components.Model import *
 
 app = Flask(__name__)
-model = trainning_model()
+# model = trainning_model()
 
 # MySQL Database configuration
 app.config['MYSQL_HOST'] = 'localhost'
@@ -68,14 +68,36 @@ def delete_subject():
 
 @app.route("/grading")
 def render_grading():
-    return render_template("grading.html")
+    add_exam = execute_query("INSERT INTO enrollment (subject_id, student_id, score) VALUES (%s, %s, %s)", (26, 22, 0))
+    return redirect('/')
 
 @app.route("/detail")
 def render_detail_page():
+    msv_arr = [2,4,2,2]
+    answer_arr = [-1, -1, 2, 2, -1, 4, 2, -1, 1, -1]
+    msv = ""
+    is_student_exist = False
+
+    for digit in msv_arr:
+        msv = msv + str(digit)
+
     subject_id = request.args.get("id")
     subject = execute_query("SELECT * FROM subjects WHERE id = %s", (subject_id,))
     students = execute_query("SELECT * FROM students INNER JOIN enrollment ON students.id = enrollment.student_id WHERE enrollment.subject_id = %s", (subject_id,))
-    print(students)
+
+    for student in students:
+        if msv == student['msv']:
+            is_student_exist  = True
+            break
+    
+    print(is_student_exist)
+
+    # if is_student_exist == False:
+    new_student = execute_query("SELECT * FROM students WHERE msv = %s", (msv,))
+    print(subject_id)
+    print(new_student[0]['id'])
+    # add_exam = execute_query("INSERT INTO enrollment(subject_id, student_id, score) VALUES (%s, %s, %s)", (subject_id, new_student[0]['id'], 0))
+    
     return render_template("examDetail.html", subject=subject[0], students=students)
 
 def execute_query(query, params=None):

@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function handleFiles(files) {
     for (let i = 0; i < files.length; i++) {
-      console.log("File:", files[i].name);
+      console.log(files[i]);
       // Bạn có thể thêm mã xử lý tệp ở đây, ví dụ: tải lên tệp, hiển thị tệp, v.v.
     }
   }
