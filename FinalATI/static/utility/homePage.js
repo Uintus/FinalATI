@@ -37,7 +37,7 @@ dltBoxes.forEach((dltBox, index) => {
   dltBox.addEventListener("click", function () {
     handleDltPopup();
     const dltBtnClickListener = () => {
-      handleDeleteExam(index);
+      handleDeleteExam(dltBox.id);
       dltBtn.removeEventListener("click", dltBtnClickListener);
     };
     dltBtn.addEventListener("click", dltBtnClickListener);
@@ -61,9 +61,17 @@ function handleHiddenPopup() {
 }
 
 // delete exam here in DB
-function handleDeleteExam(index) {
+function handleDeleteExam(id) {
   blurLayer.classList.remove("blur");
   dltPopup.style.top = "";
-
-  console.log("the exam at: " + index + " button");
+  window.location.href = "/delete_subject?id=" + id;
 }
+//_________________________HANDLE EXAM DETAIL__________________________
+const detailArrowBtns = document.querySelectorAll(".course--arrow");
+
+detailArrowBtns.forEach((detailArrowBtn) => {
+  detailArrowBtn.addEventListener("click", function () {
+    window.location.href = "/detail?id=" + detailArrowBtn.id;
+  });
+});
+

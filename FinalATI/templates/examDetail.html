@@ -43,6 +43,7 @@
         <div class="content">
             <div class="content__box column">
                 <div class="content__dashboard">
+                    <p>{{ subject['subject_name'] }}</p>
                     <p class="dashboard__header"></p>
                     <div class="dashboard__content"></div>
                 </div>
@@ -66,12 +67,13 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for student in students %}
                                 <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td class="score">Otto</td>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ student['msv'] }}</td>
+                                    <td>{{ student['student_name'] }}</td>
+                                    <td>{{ student['class'] }}</td>
+                                    <td class="score">{{ student['score'] }}</td>
                                     <td class="row">
                                         <button class="edit__icon edit--score">
                                             <i class="fa-solid fa-pen"></i>
@@ -81,210 +83,7 @@
                                         </button>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td class="score">Thornton</td>
-                                    <td class="row">
-                                        <button class="edit__icon edit--score">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                        <button class="edit__icon delete--std">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td class="score">Thornton</td>
-                                    <td class="row">
-                                        <button class="edit__icon edit--score">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                        <button class="edit__icon delete--std">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td class="score">Thornton</td>
-                                    <td class="row">
-                                        <button class="edit__icon edit--score">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                        <button class="edit__icon delete--std">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td class="score">Thornton</td>
-                                    <td class="row">
-                                        <button class="edit__icon edit--score">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                        <button class="edit__icon delete--std">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>3</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td class="score">Thornton</td>
-                                    <td class="row">
-                                        <button class="edit__icon edit--score">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                        <button class="edit__icon delete--std">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>Thornton</td>
-                                    <td class="row">
-                                        <button class="edit__icon edit--score">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                        <button class="edit__icon delete--std">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>Thornton</td>
-                                    <td class="row">
-                                        <button class="edit__icon edit--score">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                        <button class="edit__icon delete--std">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>3</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>Thornton</td>
-                                    <td class="row">
-                                        <button class="edit__icon edit--score">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                        <button class="edit__icon delete--std">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>3</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>Thornton</td>
-                                    <td class="row">
-                                        <button class="edit__icon edit--score">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                        <button class="edit__icon delete--std">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>3</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>Thornton</td>
-                                    <td class="row">
-                                        <button class="edit__icon edit--score">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                        <button class="edit__icon delete--std">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>3</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>Thornton</td>
-                                    <td class="row">
-                                        <button class="edit__icon edit--score">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                        <button class="edit__icon delete--std">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>3</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>Thornton</td>
-                                    <td class="row">
-                                        <button class="edit__icon edit--score">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                        <button class="edit__icon delete--std">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-
-
-                                <tr>
-                                    <td>3</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>Thornton</td>
-                                    <td class="row">
-                                        <button class="edit__icon edit--score">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                        <button class="edit__icon delete--std">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
