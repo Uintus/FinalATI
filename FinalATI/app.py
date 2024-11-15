@@ -28,7 +28,7 @@ def index():
     cursor.close()
     connection.close()
     print(rows[0]["student_name"])
-    return render_template("index.html")
+    return render_template("homePage.html")
 
 @app.route("/grading")
 def render_grading():
