@@ -116,11 +116,24 @@
   top: 60px;
   left: 50%;
   transform: translate(-50%, -50%);
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  /* position: relative; */
 }
-
+.stdExam__search input {
+  width: 80%;
+  margin-left: 20px;
+  height: 30px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
 .stdExam__search img {
   width: 20px;
   height: 20px;
+  position: absolute;
+  right: 15px;
 }
 
 .stdExam__table table {

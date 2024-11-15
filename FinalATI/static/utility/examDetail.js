@@ -38,6 +38,9 @@ function handleRemoveExam(index) {
 
 // __________________________HANDLE EDIT STD SCORE___________________________
 
+const scores = document.querySelectorAll(".score");
+const scoreSpan = document.querySelector(".popup--edit span");
+
 const editExamBtns = document.querySelectorAll(".edit--score");
 const editPopup = document.querySelector(".popup--edit");
 const editBtn = document.querySelector(".popup--edit button");
@@ -45,10 +48,11 @@ const exitEditBtn = document.querySelector(".popup--edit i");
 
 editExamBtns.forEach((editExamBtn, index) => {
   editExamBtn.addEventListener("click", function () {
-    handleShowEditPopup();
+    handleShowEditPopup(index);
     const editBtnClickListener = () => {
       handleHiddenEditPopup();
       handleEditExam(index);
+
       editBtn.removeEventListener("click", editBtnClickListener);
     };
     editBtn.addEventListener("click", editBtnClickListener);
@@ -64,9 +68,11 @@ function handleHiddenEditPopup() {
   blurLayer.classList.remove("blur");
 }
 
-function handleShowEditPopup() {
+function handleShowEditPopup(index) {
   editPopup.style.top = "200px";
   blurLayer.classList.add("blur");
+  //___EDIT SHOW SCORE___
+  scoreSpan.textContent = scores[index].textContent;
 }
 
 function handleEditExam(index) {
