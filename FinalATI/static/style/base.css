@@ -1,5 +1,12 @@
 :root {
   --main-color--: #5955b3;
+  --c-theme-primary: #5955b3;
+  --c-theme-primary-accent: #cbe8ff;
+  --c-bg-primary: #d6dae0;
+  --c-bg-secondary: #eaebec;
+  --c-bg-tertiary: #fdfdfd;
+  --c-text-primary: #1f1f25;
+  --c-text-secondary: #999fa6;
 }
 * {
   box-sizing: inherit;

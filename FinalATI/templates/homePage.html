@@ -68,22 +68,18 @@
                         <i class="fa-solid fa-plus"></i>
                     </div>
 
+
                     <div class="detail--left__courses column">
-                        <div class="course row" id="0">
+                        {% for subject in subjects %}
+                        <div class="course row" id= "{{subject['id']}}" >
                             <div class="course__box row">
                                 <div class="course__img">
                                     <img src="../static/img/artificial-intelligence.png" alt="course">
                                 </div>
                                 <div class="course__content column">
-                                    <p class="course--name">System Managemnt</p>
+                                    <p class="course--name">{{ subject["subject_name"] }}</p>
                                     <div class="course--desc">
-                                        <p>System management is the process of ensuring enterprise
-                                            IT
-                                            systems meet business needs. It involves managing individual workstations,
-                                            cloud
-                                            environments, and network assets according to robust policies.
-
-                                        </p>
+                                        <p>{{ subject["subject_des"] }}</p>
                                     </div>
                                 </div>
                                 <button class="course--arrow">
@@ -91,78 +87,14 @@
                                 </button>
                                 <div class="course--dots">
                                     <i class="fa-solid fa-ellipsis-vertical"></i>
-                                    <div class="course--delete hidden">
+                                    <div class="course--delete hidden " id= "{{subject['id']}}">
                                         <span>Delete Exam</span>
                                     </div>
                                 </div>
 
                             </div>
-
-
-                        </div>
-                        <div class="course row" id="0">
-                            <div class="course__box row">
-                                <div class="course__img">
-                                    <img src="../static/img/artificial-intelligence.png" alt="course">
-                                </div>
-                                <div class="course__content column">
-                                    <p class="course--name">System Managemnt</p>
-                                    <div class="course--desc">
-                                        <p>System management is the process of ensuring enterprise
-                                            IT
-                                            systems meet business needs. It involves managing individual workstations,
-                                            cloud
-                                            environments, and network assets according to robust policies.
-
-                                        </p>
-                                    </div>
-                                </div>
-                                <button class="course--arrow">
-                                    <i class="fa-solid fa-chevron-right"></i>
-                                </button>
-                                <div class="course--dots">
-                                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                                    <div class="course--delete hidden">
-                                        <span>Delete Exam</span>
-                                    </div>
-                                </div>
-
-                            </div>
-
-
-                        </div>
-                        <div class="course row" id="0">
-                            <div class="course__box row">
-                                <div class="course__img">
-                                    <img src="../static/img/artificial-intelligence.png" alt="course">
-                                </div>
-                                <div class="course__content column">
-                                    <p class="course--name">System Managemnt</p>
-                                    <div class="course--desc">
-                                        <p>System management is the process of ensuring enterprise
-                                            IT
-                                            systems meet business needs. It involves managing individual workstations,
-                                            cloud
-                                            environments, and network assets according to robust policies.
-
-                                        </p>
-                                    </div>
-                                </div>
-                                <button class="course--arrow">
-                                    <i class="fa-solid fa-chevron-right"></i>
-                                </button>
-                                <div class="course--dots">
-                                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                                    <div class="course--delete hidden">
-                                        <span>Delete Exam</span>
-                                    </div>
-                                </div>
-
-                            </div>
-
-
-                        </div>
-
+                        </div>                    
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -173,8 +105,8 @@
             </div>
         </div>
 
-        <!-- ___________________ADD COURSE EXAM FORM_______________________ -->
-        <div class="popup--dlt">
+        <!-- ___________________DELETE COURSE EXAM FORM_______________________ -->
+        <div class="popup--dlt"> 
             <i class="fa-solid fa-xmark"></i>
             <p>Are you sure you want to delete this exam?</p>
             <button>DELETE</button>
@@ -184,20 +116,15 @@
         <div class="addCourse__form">
             <i class="fa-solid fa-xmark dlt_icon"></i>
             <h1>ADD NEW EXAMINATION</h1>
-            <form id="subjectForm">
+            <form id="subjectForm" action="/" method="post">
                 <div class="form-group">
                     <label for="subjectName">Subject Name:</label>
-                    <input type="text" id="subjectName" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="imageLink">Subject Image Link:</label>
-                    <input type="url" id="imageLink" required>
+                    <input type="text" id="subjectName" name="subjectName" required>
                 </div>
 
                 <div class="form-group">
                     <label for="description">Subject Description (Max 50 words):</label>
-                    <textarea id="description" rows="4" maxlength="250" required></textarea>
+                    <textarea id="description" name="subjectDes" rows="4" maxlength="250" required></textarea>
                     <small>(Maximum 50 words)</small>
                 </div>
 
@@ -207,7 +134,7 @@
                 <div class="answer-row">
                     <div class="form-group">
                         <label for="answer1">Question 1</label>
-                        <select id="answer1">
+                        <select id="answer1" name="answer1">
                             <option value="A">A</option>
                             <option value="B">B</option>
                             <option value="C">C</option>
@@ -216,7 +143,7 @@
                     </div>
                     <div class="form-group">
                         <label for="answer2">Question 2</label>
-                        <select id="answer2">
+                        <select id="answer2" name="answer2">
                             <option value="A">A</option>
                             <option value="B">B</option>
                             <option value="C">C</option>
@@ -225,7 +152,7 @@
                     </div>
                     <div class="form-group">
                         <label for="answer3">Question 3</label>
-                        <select id="answer3">
+                        <select id="answer3" name="answer3">
                             <option value="A">A</option>
                             <option value="B">B</option>
                             <option value="C">C</option>
@@ -234,7 +161,7 @@
                     </div>
                     <div class="form-group">
                         <label for="answer4">Question 4</label>
-                        <select id="answer4">
+                        <select id="answer4" name="answer4">
                             <option value="A">A</option>
                             <option value="B">B</option>
                             <option value="C">C</option>
@@ -243,7 +170,7 @@
                     </div>
                     <div class="form-group">
                         <label for="answer5">Question 5</label>
-                        <select id="answer5">
+                        <select id="answer5" name="answer5">
                             <option value="A">A</option>
                             <option value="B">B</option>
                             <option value="C">C</option>
@@ -256,7 +183,7 @@
                 <div class="answer-row">
                     <div class="form-group">
                         <label for="answer6">Question 6</label>
-                        <select id="answer6">
+                        <select id="answer6" name="answer6">
                             <option value="A">A</option>
                             <option value="B">B</option>
                             <option value="C">C</option>
@@ -265,7 +192,7 @@
                     </div>
                     <div class="form-group">
                         <label for="answer7">Question 7</label>
-                        <select id="answer7">
+                        <select id="answer7" name="answer7">
                             <option value="A">A</option>
                             <option value="B">B</option>
                             <option value="C">C</option>
@@ -274,7 +201,7 @@
                     </div>
                     <div class="form-group">
                         <label for="answer8">Question 8</label>
-                        <select id="answer8">
+                        <select id="answer8" name="answer8">
                             <option value="A">A</option>
                             <option value="B">B</option>
                             <option value="C">C</option>
@@ -283,7 +210,7 @@
                     </div>
                     <div class="form-group">
                         <label for="answer9">Question 9</label>
-                        <select id="answer9">
+                        <select id="answer9" name="answer9">
                             <option value="A">A</option>
                             <option value="B">B</option>
                             <option value="C">C</option>
@@ -292,7 +219,7 @@
                     </div>
                     <div class="form-group">
                         <label for="answer10">Question 10</label>
-                        <select id="answer10">
+                        <select id="answer10" name="answer10">
                             <option value="A">A</option>
                             <option value="B">B</option>
                             <option value="C">C</option>
