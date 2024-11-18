@@ -25,11 +25,15 @@
             <div class="items">
                 <div class="item_box">
                     <i class="fa-solid fa-house"></i>
-                    <span>Home</span>
+                    <a href="/">
+                        <span>Home</span>
+                    </a>
                 </div>
                 <div class="item_box">
                     <i class="fa-solid fa-graduation-cap"></i>
-                    <span>Student List</span>
+                    <a href="/get_student_list">
+                        <span>Student List</span>
+                    </a>
                 </div>
                 <div class="item_box">
                     <i class="fa-solid fa-gear"></i>
@@ -49,26 +53,26 @@
                         <div class="dashboard--left">
                             <div class="data-table">
                                 <div class="data-cell">
-                                  <div class="data-value">2,395</div>
+                                  <div class="data-value">{{ highestScore }}</div>
                                   <div class="data-label">Highest score</div>
                                 </div>
                                 <div class="data-cell">
-                                  <div class="data-value">£1,842,373.11</div>
+                                  <div class="data-value">{{ lowestScore }}</div>
                                   <div class="data-label">Lowest score</div>
                                 </div>
                                 <div class="data-cell">
-                                  <div class="data-value">£56.71</div>
+                                  <div class="data-value">{{ avgScore }}</div>
                                   <div class="data-label">Average score</div>
                                 </div>
                                 <div class="data-cell">
-                                  <div class="data-value">£111,503.94</div>
+                                  <div class="data-value">{{ passPercentage }}%</div>
                                   <div class="data-label">Percentage passed</div>
                                 </div>
                               </div>
                         </div>
 
                         <div class="dashboard--right">
-                            <canvas id="barChart"></canvas>
+                            <canvas id="barChart" data-score="{{ amountOfEachScore }}"></canvas>
                         </div>
 
                     </div>
@@ -104,7 +108,7 @@
                                         <button class="edit__icon edit--score">
                                             <i class="fa-solid fa-pen"></i>
                                         </button>
-                                        <button class="edit__icon delete--std">
+                                        <button class="edit__icon delete--std" data-subject="{{ student['subject_id'] }}" id="{{ student['id'] }}">
                                             <i class="fa-solid fa-trash-can"></i>
                                         </button>
                                     </td>

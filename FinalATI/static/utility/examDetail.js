@@ -6,12 +6,12 @@ const dltBtn = document.querySelector(".popup--dlt button");
 const exitBtn = document.querySelector(".popup--dlt i");
 const blurLayer = document.querySelector(".hidden_layer");
 
-dltExamBtns.forEach((dltExamBtn, index) => {
+dltExamBtns.forEach((dltExamBtn) => {
   dltExamBtn.addEventListener("click", function () {
     handleShowPopup();
     const dltBtnClickListener = () => {
       handleHiddenPopup();
-      handleRemoveExam(index);
+      handleRemoveExam(dltExamBtn.id, dltExamBtn.dataset.subject);
       dltBtn.removeEventListener("click", dltBtnClickListener);
     };
     dltBtn.addEventListener("click", dltBtnClickListener);
@@ -32,8 +32,8 @@ function handleShowPopup() {
   blurLayer.classList.add("blur");
 }
 
-function handleRemoveExam(index) {
-  console.log("removed exam " + index);
+function handleRemoveExam(id, subject_id) {
+  window.location.href = "/delete_student_from_subject?id=" + id + '&subject_id=' + subject_id;
 }
 
 // __________________________HANDLE SUBMIT FILE___________________________
@@ -139,8 +139,9 @@ canvas.width = 600;
 canvas.height = 250;
 
 // Data for the chart
-const scores = [2, 5, 10, 15, 3, 18, 12, 9, 6, 4]; // Number of students for each score (1-10)
+const scores = JSON.parse(canvas.dataset.score); // Number of students for each score (1-10)
 const labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // Scores
+
 const chartWidth = canvas.width - 100; // Padding for labels
 const chartHeight = canvas.height - 100; // Padding for labels
 const barWidth = chartWidth / scores.length - 10; // Width of each bar
@@ -171,7 +172,7 @@ labels.forEach((label, index) => {
 });
 
 // Add Y-axis labels
-const ySteps = 5; // Number of Y-axis steps
+const ySteps = Math.max(...scores); // Number of Y-axis steps
 const yStepValue = Math.ceil(maxScore / ySteps); // Step size
 ctx.textAlign = "right";
 for (let i = 0; i <= ySteps; i++) {

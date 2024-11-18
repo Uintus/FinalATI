@@ -25,11 +25,15 @@
             <div class="items">
                 <div class="item_box">
                     <i class="fa-solid fa-house"></i>
-                    <span>Home</span>
+                    <a href="/">
+                        <span>Home</span>
+                    </a>
                 </div>
                 <div class="item_box">
                     <i class="fa-solid fa-graduation-cap"></i>
-                    <span>Student List</span>
+                    <a href="/get_student_list">
+                        <span>Student List</span>
+                    </a>
                 </div>
                 <div class="item_box">
                     <i class="fa-solid fa-gear"></i>
@@ -167,56 +171,13 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for student in students %}
                                 <tr>
-                                    <td>1</td>
-                                    <td>John Doe</td>
-                                    <td>9.5</td>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ student['student_name'] }}</td>
+                                    <td>{{ student['avg_score'] | round_to_2 }}</td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Jane Smith</td>
-                                    <td>9.4</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Michael Johnson</td>
-                                    <td>9.3</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>Emily Davis</td>
-                                    <td>9.2</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>Daniel Brown</td>
-                                    <td>9.1</td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>Olivia Wilson</td>
-                                    <td>9.0</td>
-                                </tr>
-                                <tr>
-                                    <td>7</td>
-                                    <td>William Martinez</td>
-                                    <td>8.9</td>
-                                </tr>
-                                <tr>
-                                    <td>8</td>
-                                    <td>Sophia Anderson</td>
-                                    <td>8.8</td>
-                                </tr>
-                                <tr>
-                                    <td>9</td>
-                                    <td>Benjamin Taylor</td>
-                                    <td>8.7</td>
-                                </tr>
-                                <tr>
-                                    <td>10</td>
-                                    <td>Isabella Moore</td>
-                                    <td>8.6</td>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
