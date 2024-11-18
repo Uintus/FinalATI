@@ -17,7 +17,25 @@ function handleHiddenForm() {
   blurLayer.classList.remove("blur");
 }
 
-//_________________________HANDLE POST FORM__________________________
+//_________________________HANDLE SEARCH__________________________
+document.addEventListener("DOMContentLoaded", () => {
+  const searchInput = document.querySelector('.header__search input[type="text"]'); // Truy cập ô input search
+  const courses = document.querySelectorAll('.course'); // Lấy tất cả các khóa học
+
+  searchInput.addEventListener("input", (event) => {
+      const query = event.target.value.toLowerCase(); // Lấy nội dung người dùng nhập và chuyển thành chữ thường
+
+      courses.forEach(course => {
+          const courseName = course.querySelector('.course--name').textContent.toLowerCase(); // Lấy tên khóa học
+          if (courseName.includes(query)) {
+              course.style.display = ""; // Hiển thị nếu khớp
+          } else {
+              course.style.display = "none"; // Ẩn nếu không khớp
+          }
+      });
+  });
+});
+
 
 //_________________________HANDLE DELETE EXAM_______________________
 const dotsBtns = document.querySelectorAll(".course--dots");
