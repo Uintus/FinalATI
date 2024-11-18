@@ -34,7 +34,7 @@ CREATE TABLE `enrollment` (
   KEY `student_id` (`student_id`),
   CONSTRAINT `enrollment_ibfk_1` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`),
   CONSTRAINT `enrollment_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `enrollment` (
 
 LOCK TABLES `enrollment` WRITE;
 /*!40000 ALTER TABLE `enrollment` DISABLE KEYS */;
-INSERT INTO `enrollment` VALUES (1,26,7,0),(2,26,8,0),(3,27,15,0),(4,28,7,0),(5,29,11,0),(6,30,19,0),(7,27,11,0),(8,30,12,0),(9,26,17,0),(10,27,7,0),(11,26,18,0),(12,30,18,0),(13,28,17,0),(30,26,22,0);
+INSERT INTO `enrollment` VALUES (1,26,7,7),(2,26,8,8),(3,27,15,7),(4,28,7,8),(5,29,11,7),(6,30,19,6),(7,27,11,7),(8,30,12,9),(9,26,17,7),(10,27,7,5),(11,26,18,7);
 /*!40000 ALTER TABLE `enrollment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -130,7 +130,7 @@ CREATE TABLE `subjects` (
   `q_9` varchar(255) NOT NULL,
   `q_10` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -139,7 +139,7 @@ CREATE TABLE `subjects` (
 
 LOCK TABLES `subjects` WRITE;
 /*!40000 ALTER TABLE `subjects` DISABLE KEYS */;
-INSERT INTO `subjects` VALUES (26,'Artificial Intelligence','Artificial intelligence is the simulation of human intelligence processes by machines, especially computer systems.','D','C','D','B','D','C','B','A','A','D'),(27,'Advance Topics in IT','ATI specializes in technical training for satellite communications, space, defense, radar, sonar and acoustics, signal processing, and engineering.','B','B','B','D','C','D','B','C','A','D'),(28,'Discrete Mathematics','Discrete mathematics is the study of mathematical structures that are discrete, separated or distinct; in contrast with calculus which deals with continuous change.','A','D','C','C','B','D','B','A','A','D'),(29,'Data Science','Data science is the study of data to extract meaningful insights for business. It is a multidisciplinary approach that combines principles and practices from the fields of mathematics, statistics, artificial intelligence, and computer engineering to analyze large amounts of data.','B','D','C','C','C','B','C','A','A','D'),(30,'Machine Learning','Machine learning (ML) is a field of study in artificial intelligence concerned with the development and study of statistical algorithms that can learn from data and generalize to unseen data, and thus perform tasks without explicit instructions.','B','D','A','A','C','D','B','C','C','C');
+INSERT INTO `subjects` VALUES (26,'Artificial Intelligence','Artificial intelligence is the simulation of human intelligence processes by machines, especially computer systems.','D','C','D','B','D','C','B','A','A','D'),(27,'Advance Topics in IT','ATI specializes in technical training for satellite communications, space, defense, radar, sonar and acoustics, signal processing, and engineering.','B','B','B','D','C','D','B','C','A','D'),(28,'Discrete Mathematics','Discrete mathematics is the study of mathematical structures that are discrete, separated or distinct; in contrast with calculus which deals with continuous change.','A','D','C','C','B','D','B','A','A','D'),(29,'Data Science','Data science is the study of data to extract meaningful insights for business. It is a multidisciplinary approach that combines principles and practices from the fields of mathematics, statistics, artificial intelligence, and computer engineering to analyze large amounts of data.','B','D','C','C','C','B','C','A','A','D'),(30,'Machine Learning','Machine learning (ML) is a field of study in artificial intelligence concerned with the development and study of statistical algorithms that can learn from data and generalize to unseen data, and thus perform tasks without explicit instructions.','B','D','A','A','C','D','B','C','C','C'),(41,'abc','123','A','A','A','A','A','A','A','A','A','A'),(42,'xyz','123\r\n','A','A','A','A','A','A','A','A','A','A');
 /*!40000 ALTER TABLE `subjects` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -152,4 +152,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-15 18:10:22
+-- Dump completed on 2024-11-18 19:57:41
