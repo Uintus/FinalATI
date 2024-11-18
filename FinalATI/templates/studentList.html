@@ -24,11 +24,15 @@
             <div class="items">
                 <div class="item_box">
                     <i class="fa-solid fa-house"></i>
-                    <span>Home</span>
+                    <a href="/">
+                        <span>Home</span>
+                    </a>
                 </div>
                 <div class="item_box">
                     <i class="fa-solid fa-graduation-cap"></i>
-                    <span>Student List</span>
+                    <a href="/get_student_list">
+                        <span>Student List</span>
+                    </a>
                 </div>
                 <div class="item_box">
                     <i class="fa-solid fa-gear"></i>
@@ -66,7 +70,7 @@
                                     <td>{{ student['msv'] }}</td>
                                     <td>{{ student['student_name'] }}</td>
                                     <td>{{ student['class'] }}</td>
-                                    <td class="score">{{ student['score'] }}</td>
+                                    <td class="score">{{ student['avg_score'] | round_to_2 }}</td>
                                     <!-- <td class="row">
                                         <button class="edit__icon edit--score">
                                             <i class="fa-solid fa-pen"></i>
