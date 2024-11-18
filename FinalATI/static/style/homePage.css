@@ -140,6 +140,11 @@
   align-items: center;
 }
 
+.filler--final {
+  color: white;
+  background-color: #7471c4;
+}
+
 .detail--left__addCourse {
   cursor: pointer;
   width: 40px;
@@ -216,8 +221,149 @@
 .detail--right {
   flex: 1;
   height: 100%;
-  border: 0.5px solid black;
+  /* border: 0.5px solid black; */
+  justify-content: center;
+  align-items: center;
 }
+
+.detail--right__calender {
+  flex: 1;
+  width: 90%;
+}
+
+/* body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  background-color: #f4f4f9;
+} */
+
+.calendar {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  /* padding: 20px; */
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.month {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--main-color--);
+  justify-content: center;
+  align-items: center;
+}
+
+.month h2 {
+  padding-right: 20px;
+  padding-left: 20px ;
+  
+}
+
+.month div {
+  width: 35px;
+  height: 35px;
+  border-radius: 30px;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.month div:active {
+  background-color: #f0f0f0c5;
+}
+
+.days,
+.dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+}
+
+.days div {
+  font-weight: bold;
+  padding: 5px;
+}
+
+.date,
+.empty {
+  padding: 10px;
+  margin: 2px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+.date:hover {
+  background-color: var(--main-color--);
+  color: white;
+  cursor: pointer;
+}
+
+
+.empty {
+  background-color: transparent;
+}
+
+/* ---------------top std---------------- */
+.detial--right__topStd {
+  /* flex: 1; */
+  width: 90%;
+  height: 280px;
+  /* border: 1px solid #ccc; */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  overflow-y: auto;
+  /* padding: 10px; */
+  position: relative;
+  margin-top: 10px;
+}
+
+
+.detial--right__topStd h1 {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: var(--main-color--);
+}
+
+.detial--right__topStd table {
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.detial--right__topStd thead th {
+  background-color: #f4f4f9;
+  border-bottom: 2px solid #ddd;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.detial--right__topStd tbody td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.detial--right__topStd tbody tr:last-child td {
+  border-bottom: none; /* Xóa viền dưới dòng cuối */
+}
+.detial--right__topStd .topStd-header {
+  position: sticky;
+  top: 0;
+}
+
 .course--arrow {
   margin-left: auto;
   cursor: pointer;
@@ -375,7 +521,7 @@ button:hover {
   background-color: white;
   font-size: 15px;
   flex-direction: column;
-  z-index: 999;
+  z-index: 99999;
   border-radius: 5px;
 }
 .popup--dlt p {

@@ -41,11 +41,37 @@
 
         <!-- ___________________CONTENT PART_______________________ -->
         <div class="content">
+            <p><span>Final Exam: </span>{{ subject['subject_name'] }}</p>
             <div class="content__box column">
                 <div class="content__dashboard">
-                    <p>{{ subject['subject_name'] }}</p>
-                    <p class="dashboard__header"></p>
-                    <div class="dashboard__content"></div>
+                    <!-- <p class="dashboard__header"></p> -->
+                    <div class="dashboard__content row">
+                        <div class="dashboard--left">
+                            <div class="data-table">
+                                <div class="data-cell">
+                                  <div class="data-value">2,395</div>
+                                  <div class="data-label">Highest score</div>
+                                </div>
+                                <div class="data-cell">
+                                  <div class="data-value">£1,842,373.11</div>
+                                  <div class="data-label">Lowest score</div>
+                                </div>
+                                <div class="data-cell">
+                                  <div class="data-value">£56.71</div>
+                                  <div class="data-label">Average score</div>
+                                </div>
+                                <div class="data-cell">
+                                  <div class="data-value">£111,503.94</div>
+                                  <div class="data-label">Percentage passed</div>
+                                </div>
+                              </div>
+                        </div>
+
+                        <div class="dashboard--right">
+                            <canvas id="barChart"></canvas>
+                        </div>
+
+                    </div>
                 </div>
 
                 <div class="content__stdExam column">

@@ -1,0 +1,227 @@
+/* ___________________NAVIGATE PART_________________ */
+.container {
+    width: 100%;
+    height: 98vh;
+    background-color: var(--main-color--);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: Arial, sans-serif;
+    border-radius: 30px;
+    flex-direction: row;
+    position: relative;
+  }
+  .navigate {
+    flex: 1;
+    height: 100%;
+    /* border: 0.5 solid black; */
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    flex-direction: column;
+  }
+  .content {
+    flex: 5;
+    width: 98%;
+    height: 98%;
+    background-color: white;
+    margin-right: 9px;
+    border-radius: 26px;
+  }
+  .logo_page {
+    width: 50px;
+    height: 50px;
+    margin-top: 20px;
+  }
+  .navigate > h1 {
+    margin-bottom: 80px;
+  }
+  
+  .item_box {
+    margin: 35px;
+  }
+  .item_box:hover {
+    cursor: pointer;
+  }
+  .item_box:last-child {
+    margin: 30px;
+    margin-top: 350px;
+  }
+  .item_box i {
+    font-size: 20px;
+    padding-right: 20px;
+  }
+  .item_box:last-child i {
+    padding-right: 30px;
+  }
+  .item_box span {
+    font-size: 20px;
+  }
+
+
+
+  /* ___________________CONTENT PART_________________ */
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: black;
+    /* border: 0.5px solid black; */
+    /* width: 93%; */
+  }
+  
+  .content__box {
+    /* border: 0.5px solid black; */
+    height: 723px;
+    width: 93%;
+    overflow: auto; /* Cho phép cuộn */
+    position: relative;
+  }
+  .stdExam__table thead{
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+      color: white;
+  }
+  
+
+  
+
+  .content__stdExam {
+    /* flex: 3; */
+    width: 100%;
+    height: 30px;
+    /* border: 0.5px solid black; */
+    position: relative;
+  }
+  
+  .stdExam__header {
+    /* height: auto; */
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--main-color--);
+  }
+  
+  .stdExam__search {
+    width: 50%;
+    height: 40px;
+    border: 0.5px solid rgb(208 201 201);
+    border-radius: 20px;
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    /* position: relative; */
+  }
+  .stdExam__search input {
+    width: 80%;
+    margin-left: 20px;
+    height: 30px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+  }
+  .stdExam__search img {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 15px;
+  }
+  
+  .stdExam__table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 40px;
+    font-size: 15px;
+  }
+  
+  .stdExam__table th,
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .stdExam__table th {
+    background-color: #5482ff;
+    font-weight: bold;
+    border: none;
+  }
+  
+  .stdExam__table tr:nth-child(even) {
+    background-color: #f1f1f1;
+  }
+  
+  .stdExam__table tr:hover {
+    background-color: #e9eaeb;
+  }
+  
+  .stdExam__table .row-header {
+    font-weight: bold;
+    background-color: #f1f1f1;
+  }
+  
+  .edit__icon {
+    width: 30px;
+    height: 30px;
+    background-color: aqua;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2px;
+    color: white;
+    cursor: pointer;
+    border: none;
+  }
+  
+  
+  .edit--score {
+    background-color: blue;
+  }
+  .delete--std {
+    background-color: red;
+  }
+  .edit--score:active {
+    background-color: rgba(0, 0, 255, 0.7);
+  }
+  .delete--std:active {
+    background-color: rgba(255, 0, 0, 0.7);
+  }
+  
+  .content__upload {
+      width: 93%;
+      height: 130px;
+      background-color: #5482ff;
+      margin: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+  .upload__box {
+      width: 40%;
+      height: 75%;
+      background-color: white;
+      border-radius: 10px;
+      border: 3px dotted rgba(0, 0, 0, 0.3); /* Đường viền chấm chấm với màu mờ */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: rgba(0, 0, 0, 1);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 15px;
+  }
+  
+  .upload__box.dragover {
+      background-color: rgba(0, 0, 0, 0.1); /* Hiệu ứng khi kéo tệp vào */
+  }
+  
+  

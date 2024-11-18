@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examiner - Student List</title>
+    <link rel="icon" href="../static/img/icon.png" type="image/png">
+
+    <link rel="stylesheet" href="../static/fonts/fontawesome-free-6.5.2-web/css/all.css">
+    <link rel="stylesheet" href="../static/fonts/themify-icons/themify-icons.css">
+
+    <link rel="stylesheet" href="../static/style/base.css">
+    <link rel="stylesheet" href="../static/style/studentList.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="hidden_layer"></div>
+        <!-- ___________________NAVIGATE PART_______________________ -->
+        <div class="navigate">
+            <img src="../static/img/icon_2.png" alt="logo" class="logo_page">
+            <h1>Examiner</h1>
+            <div class="items">
+                <div class="item_box">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Home</span>
+                </div>
+                <div class="item_box">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>Student List</span>
+                </div>
+                <div class="item_box">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Setting</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ___________________CONTENT PART_______________________ -->
+        <div class="content">
+            <div class="content__box column">
+
+                <div class="content__stdExam column">
+                    <p class="stdExam__header">Student List</p>
+                    <div class="stdExam__search">
+                        <input type="text" name="search" id="">
+                        <img src="../static/img/search.png" alt="">
+                    </div>
+                    <div class="stdExam__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Class</th>
+                                    <th>Average Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in students %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ student['msv'] }}</td>
+                                    <td>{{ student['student_name'] }}</td>
+                                    <td>{{ student['class'] }}</td>
+                                    <td class="score">{{ student['score'] }}</td>
+                                    <!-- <td class="row">
+                                        <button class="edit__icon edit--score">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </button>
+                                        <button class="edit__icon delete--std">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    </td> -->
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="../static/utility/studentList.js"></script>
+</body>
+
+</html>
