@@ -36,7 +36,100 @@ function handleRemoveExam(index) {
   console.log("removed exam " + index);
 }
 
-// __________________________HANDLE EDIT STD SCORE___________________________
+// __________________________HANDLE SUBMIT FILE___________________________
+
+document.addEventListener("DOMContentLoaded", function () {
+  const fileInput = document.getElementById("fileInput");
+  const uploadBox = document.querySelector(".upload__box");
+  const submitButton = document.getElementById("submitButton");
+  const contentUpload = document.querySelector(".content__upload");
+
+  function checkSuccessData() {
+    return contentUpload.getAttribute("success-data") === "true";
+  }
+
+  function updateUploadBox() {
+    const uploadText = uploadBox.querySelector("p");
+    if (!checkSuccessData()) {
+      if (!uploadText) {
+        uploadBox.innerHTML = "<p>Wait a minute....</p>";
+      } else {
+        uploadText.textContent = "Wait a minute....";
+      }
+      fileInput.disabled = true;
+    } else {
+      if (!uploadText) {
+        uploadBox.innerHTML = "<p>Drag or Drop Student's Exam Here!</p>";
+      } else {
+        uploadText.textContent = "Drag or Drop Student's Exam Here!";
+      }
+      fileInput.disabled = false;
+    }
+  }
+
+  // Initialize the upload box status based on initial success-data attribute
+  updateUploadBox();
+
+  // Create an observer instance to watch for changes in success-data attribute
+  const observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      if (mutation.attributeName === "success-data") {
+        updateUploadBox();
+      }
+    });
+  });
+
+  // Configure the observer to watch for attribute changes
+  observer.observe(contentUpload, { attributes: true });
+
+  uploadBox.addEventListener("click", function () {
+    if (checkSuccessData()) {
+      fileInput.click();
+    }
+  });
+
+  fileInput.addEventListener("change", function () {
+    if (checkSuccessData()) {
+      const file = fileInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          uploadBox.innerHTML = `<img src="${e.target.result}" alt="Selected Image">`;
+        };
+        reader.readAsDataURL(file);
+        submitButton.disabled = false;
+      }
+    }
+  });
+
+  submitButton.addEventListener("click", function () {
+    if (fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      fileInput.value = "";
+      uploadBox.innerHTML = "<p>Drag or Drop Student's Exam Here!</p>";
+      submitButton.disabled = true;
+      contentUpload.setAttribute("success-data", "false");
+
+      //----------------Received File here!!!-------------------
+      console.log("Selected file:", file.name);
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      fetch("/uploadImg", {
+        method: "POST",
+        body: formData,
+      })
+        .then(() => {
+          console.log("Send to BE successfully");
+        })
+        .catch((error) => {
+          console.log("Error uploading the file:", error);
+        });
+    }
+  });
+});
+
+// __________________________HANDLE SHOW CHART___________________________
 
 const canvas = document.getElementById("barChart");
 const ctx = canvas.getContext("2d");
@@ -145,7 +238,7 @@ function drawBars() {
     // Draw bars with current progress
     ctx.fillStyle = "#4a90e2";
     scores.forEach((score, index) => {
-      const barHeight = ((score / maxScore) * chartHeight) * progress;
+      const barHeight = (score / maxScore) * chartHeight * progress;
       const x = 60 + index * (barWidth + 10);
       const y = chartHeight + 50 - barHeight;
 

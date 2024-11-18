@@ -1,6 +1,8 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, send_file
 import mysql.connector
 from components.Model import *
+from PIL import Image
+import io
 
 app = Flask(__name__)
 # model = trainning_model()
@@ -92,6 +94,46 @@ def render_detail_page():
     
     return render_template("examDetail.html", subject=subject[0], students=students)
 
+#---------------------Receive File IMG here!--------------------------------
+@app.route('/uploadImg', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return 'No file part', 400
+    
+    file = request.files['file']
+    
+    if file.filename == '':
+        return 'No selected file', 400
+    
+    # Kiểm tra loại tệp hình ảnh
+    if file and file.filename.lower().endswith(('png', 'jpg', 'jpeg', 'gif')):
+        try:
+            # Đọc tệp vào bộ nhớ
+            img_data = file.read()
+            
+            # Mở ảnh từ bộ nhớ
+            img = Image.open(io.BytesIO(img_data))
+            
+            # Hiển thị ảnh bằng Pillow
+            img.show()  # Mở ảnh trong cửa sổ mặc định của hệ thống
+
+            # Xử lý và nhận diện với model
+            # identifier_img, answers_img = processing_img(img)
+            # result_identifiers, result_answers = handWritten_recog(model, answers_img, identifier_img)
+            # print(result_identifiers, result_answers, "  sadddddddddddddddddddd")
+            
+            return 'Image displayed successfully', 200
+        except Exception as e:
+            # Bắt lỗi khi sử dụng model và in ra chi tiết lỗi
+            error_message = f'Error during model processing: {str(e)}'
+            print(error_message)  # In lỗi ra console
+            return error_message, 500
+    
+    return 'Invalid file type', 400
+
+
+
+# --------------------FUNCTIONS----------------------------
 def execute_query(query, params=None):
     """
     Hàm hỗ trợ thực thi truy vấn SQL và trả về kết quả

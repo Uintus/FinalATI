@@ -105,18 +105,17 @@ def trainning_model():
     return model
 
 #_________________________________________MAIN FOR FROCESSING IMG__________________________________________#
-def processing_img(image_path):
-    #____________DATA POSITION___________#
-    std_Identifier = [[1332, 290, 70, 80],[1418, 290, 70, 80],[1500, 290, 70, 80],[1583, 290, 70, 80]]
-    std_answers = [[620, 470, 70, 80],[620, 570, 70, 80],[620, 670, 70, 80],[620, 770, 70, 80],[620, 870, 70, 80],
-                [1160, 470, 70, 80],[1160, 570, 70, 80],[1160, 670, 70, 80],[1160, 770, 70, 80],[1160, 870, 70, 80]]
+def processing_img(image):
+    # Chuyển đổi ảnh từ Pillow sang NumPy
+    image = np.array(image)
+
+    # Vị trí của các câu trả lời và ID
+    std_Identifier = [[1332, 290, 70, 80], [1418, 290, 70, 80], [1500, 290, 70, 80], [1583, 290, 70, 80]]
+    std_answers = [[620, 470, 70, 80], [620, 570, 70, 80], [620, 670, 70, 80], [620, 770, 70, 80], [620, 870, 70, 80],
+                   [1160, 470, 70, 80], [1160, 570, 70, 80], [1160, 670, 70, 80], [1160, 770, 70, 80], [1160, 870, 70, 80]]
     identifier_img = []
     answers_img = []
 
-    # Open Answersheet
-    image = cv2.imread(image_path)
-
-    # Chuyển mảng vị trí thành mảng ảnh chứa các số 
     if image is None:
         print("Wrong path img!")
     else:
@@ -131,29 +130,28 @@ def processing_img(image_path):
             answers = crop_answer(x, y, width, height, image)
             result = process_answer(answers)
             answers_img.append(result)
-        # Hiển thị các ảnh đã xử lý
-        # for idx, img in enumerate(answers_img):
-        #     cv2.imshow(f"Identifier Image {idx+1}", img)
-        
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
-    # print(identifier_img[0][0])
 
     # Resize imgs for fitting model
     resized_identifier = [tf.image.resize(img, (28, 28)) for img in identifier_img]
-    identifier_img = tf.stack(resized_identifier)  # Chuyển đổi danh sách thành tensor
     resized_answers = [tf.image.resize(img, (28, 28)) for img in answers_img]
-    answers_img = tf.stack(resized_answers)  # Chuyển đổi danh sách thành tensor
 
-    # change range from 0-255 -> 0-1
+    # Chuyển danh sách thành tensor
+    identifier_img = tf.stack(resized_identifier)
+    answers_img = tf.stack(resized_answers)
+
+    # Normalize về khoảng 0-1
     identifier_img = tf.cast(identifier_img, tf.float32) / 255.0
     answers_img = tf.cast(answers_img, tf.float32) / 255.0
 
-    # Change type of img from RGB to grayscale
-    identifier_img = tf.image.rgb_to_grayscale(identifier_img)
-    answers_img = tf.image.rgb_to_grayscale(answers_img)
+    # Thêm chiều kênh (channels)
+    identifier_img = tf.expand_dims(identifier_img, axis=-1)  # Thêm chiều kênh nếu chưa có
+    identifier_img = tf.squeeze(identifier_img, axis=-2)  # Loại bỏ chiều dư thừa (nếu cần thiết)
+
+    answers_img = tf.expand_dims(answers_img, axis=-1)  # Tương tự với answers_img
+    answers_img = tf.squeeze(answers_img, axis=-2)
 
     return identifier_img, answers_img
+
 
 #_________________________________________MAIN FOR HANDWRITTEN RECOGNIZE=ANSWER+ID__________________________________________#
 def handWritten_recog(model, answers_img, identifier_img):
