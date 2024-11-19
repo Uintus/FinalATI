@@ -83,10 +83,19 @@ def trainning_model():
     X_test = X_test/255
 
     # set LAYERS
-    model = keras.Sequential([
-        keras.layers.Conv2D(4, (3, 3), activation='relu', input_shape=(28, 28, 1)),  # Lớp tích chập với chỉ 4 filters
-        keras.layers.Flatten(),                                                      # Chuyển đổi thành vector 1D
-        keras.layers.Dense(10, activation='softmax')                                 # Lớp đầu ra trực tiếp với 10 nodes
+    # model = keras.Sequential([
+    #     keras.layers.Conv2D(4, (3, 3), activation='relu', input_shape=(28, 28, 1)),  # Lớp tích chập với chỉ 4 filters
+    #     keras.layers.Flatten(),                                                      # Chuyển đổi thành vector 1D
+    #     keras.layers.Dense(10, activation='softmax')                                 # Lớp đầu ra trực tiếp với 10 nodes
+    # ])
+    model = tf.keras.Sequential([
+    tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+    tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+    tf.keras.layers.Flatten(),  # Chuyển thành vector 1 chiều
+    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dense(10, activation='softmax')  # 10 lớp phân loại
     ])
 
     # OPTIMIZE loss funtion
@@ -105,52 +114,117 @@ def trainning_model():
     return model
 
 #_________________________________________MAIN FOR FROCESSING IMG__________________________________________#
+# import tensorflow as tf
+# import numpy as np
+
+# def processing_img(image):
+#     image = np.array(image)
+    
+#     # Định nghĩa vùng để cắt ảnh cho identifier và answer
+#     std_Identifier = [[1332, 290, 70, 80], [1418, 290, 70, 80], [1500, 290, 70, 80], [1583, 290, 70, 80]]
+#     std_answers = [[620, 470, 70, 80], [620, 570, 70, 80], [620, 670, 70, 80], [620, 770, 70, 80], [620, 870, 70, 80],
+#                    [1160, 470, 70, 80], [1160, 570, 70, 80], [1160, 670, 70, 80], [1160, 770, 70, 80], [1160, 870, 70, 80]]
+    
+#     identifier_img = []
+#     answers_img = []
+
+#     # Cắt và xử lý từng vùng ảnh cho identifier
+#     for region in std_Identifier:
+#         x, y, width, height = region
+#         cropped = crop_answer(x, y, width, height, image)  # Hàm crop ảnh của bạn
+#         processed = process_answer(cropped)  # Hàm xử lý ảnh của bạn
+#         identifier_img.append(processed)
+
+#     # Cắt và xử lý từng vùng ảnh cho answer
+#     for region in std_answers:
+#         x, y, width, height = region
+#         cropped = crop_answer(x, y, width, height, image)
+#         processed = process_answer(cropped)
+#         answers_img.append(processed)
+
+#     # Resize các ảnh về kích thước (28, 28)
+#     identifier_img = [tf.image.resize(img, (28, 28)) for img in identifier_img]
+#     answers_img = [tf.image.resize(img, (28, 28)) for img in answers_img]
+
+#     # Chuyển ảnh thành grayscale nếu chưa có
+#     identifier_img = tf.image.rgb_to_grayscale(identifier_img)
+#     answers_img = tf.image.rgb_to_grayscale(answers_img)
+
+#     # Thêm chiều kênh duy nhất (1) nếu cần
+#     identifier_img = identifier_img[..., tf.newaxis]  # Thêm chiều kênh vào ảnh
+#     answers_img = answers_img[..., tf.newaxis]  # Thêm chiều kênh vào ảnh
+
+#     # Chuyển danh sách ảnh thành tensor
+#     identifier_img = tf.stack(identifier_img)  # Tensor: (batch_size, 28, 28, 1)
+#     answers_img = tf.stack(answers_img)        # Tensor: (batch_size, 28, 28, 1)
+
+#     # Normalize giá trị về khoảng 0-1
+#     identifier_img = tf.cast(identifier_img, tf.float32) / 255.0
+#     answers_img = tf.cast(answers_img, tf.float32) / 255.0
+
+#     # Debug kích thước tensor
+#     print("Identifier Tensor Shape:", identifier_img.shape)  # Kết quả: (batch_size, 28, 28, 1)
+#     print("Answers Tensor Shape:", answers_img.shape)        # Kết quả: (batch_size, 28, 28, 1)
+
+#     return identifier_img, answers_img
+
 def processing_img(image):
-    # Chuyển đổi ảnh từ Pillow sang NumPy
     image = np.array(image)
 
-    # Vị trí của các câu trả lời và ID
+    # Định nghĩa vùng để cắt ảnh cho identifier và answer
     std_Identifier = [[1332, 290, 70, 80], [1418, 290, 70, 80], [1500, 290, 70, 80], [1583, 290, 70, 80]]
     std_answers = [[620, 470, 70, 80], [620, 570, 70, 80], [620, 670, 70, 80], [620, 770, 70, 80], [620, 870, 70, 80],
                    [1160, 470, 70, 80], [1160, 570, 70, 80], [1160, 670, 70, 80], [1160, 770, 70, 80], [1160, 870, 70, 80]]
+
     identifier_img = []
     answers_img = []
 
-    if image is None:
-        print("Wrong path img!")
-    else:
-        for eln in std_Identifier:
-            x, y, width, height = eln
-            answers = crop_answer(x, y, width, height, image)
-            result = process_answer(answers)
-            identifier_img.append(result)
+    # Cắt và xử lý từng vùng ảnh cho identifier
+    for region in std_Identifier:
+        x, y, width, height = region
+        cropped = crop_answer(x, y, width, height, image)
+        processed = process_answer(cropped)
+        processed = cv2.resize(processed, (28, 28))
+        print("Processed image shape:", processed.shape)
+        processed_gray = cv2.cvtColor(processed, cv2.COLOR_RGBA2GRAY)
+        reshaped_pocessed = processed_gray.reshape((28,28,1))
+        print("Processed image after reshape:", reshaped_pocessed.shape)
+        identifier_img.append(reshaped_pocessed)
+    
+    # Cắt và xử lý từng vùng ảnh cho answer
+    for region in std_answers:
+        x, y, width, height = region
+        cropped = crop_answer(x, y, width, height, image)
+        processed = process_answer(cropped)
+        processed = cv2.resize(processed, (28, 28))  # Resize về kích thước (28, 28)
+        print("Processed image shape:", processed.shape)
+        processed_gray = cv2.cvtColor(processed, cv2.COLOR_RGBA2GRAY)
+        reshaped_pocessed = processed_gray.reshape((28,28,1))
+        print("Processed image after reshape:", reshaped_pocessed.shape)
+        answers_img.append(reshaped_pocessed)
 
-        for eln in std_answers:
-            x, y, width, height = eln
-            answers = crop_answer(x, y, width, height, image)
-            result = process_answer(answers)
-            answers_img.append(result)
+    # print("Before converting to array:")
+    # print("Identifier elements:", len(identifier_img))
+    # print("Answers elements:", len(answers_img))
 
-    # Resize imgs for fitting model
-    resized_identifier = [tf.image.resize(img, (28, 28)) for img in identifier_img]
-    resized_answers = [tf.image.resize(img, (28, 28)) for img in answers_img]
+    # # Chuyển đổi và kiểm tra lại
+    # identifier_img_array = np.array(identifier_img).reshape(-1, 28, 28, 1)
+    # answers_img_array = np.array(answers_img).reshape(-1, 28, 28, 1)
 
-    # Chuyển danh sách thành tensor
-    identifier_img = tf.stack(resized_identifier)
-    answers_img = tf.stack(resized_answers)
+    # print("After converting to array:")
+    # print("Identifier shape:", identifier_img_array.shape)
+    # print("Answers shape:", answers_img_array.shape)
 
-    # Normalize về khoảng 0-1
-    identifier_img = tf.cast(identifier_img, tf.float32) / 255.0
-    answers_img = tf.cast(answers_img, tf.float32) / 255.0
-
-    # Thêm chiều kênh (channels)
-    identifier_img = tf.expand_dims(identifier_img, axis=-1)  # Thêm chiều kênh nếu chưa có
-    identifier_img = tf.squeeze(identifier_img, axis=-2)  # Loại bỏ chiều dư thừa (nếu cần thiết)
-
-    answers_img = tf.expand_dims(answers_img, axis=-1)  # Tương tự với answers_img
-    answers_img = tf.squeeze(answers_img, axis=-2)
+    # Chuyển danh sách ảnh thành tensor và thêm chiều kênh
+    identifier_img = np.array(identifier_img) / 255.0  # Normalize
+    answers_img = np.array(answers_img) / 255.0  # Normalize
 
     return identifier_img, answers_img
+
+
+
+
+
 
 
 #_________________________________________MAIN FOR HANDWRITTEN RECOGNIZE=ANSWER+ID__________________________________________#

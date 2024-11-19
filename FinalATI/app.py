@@ -1,11 +1,14 @@
-from flask import Flask, render_template, request, redirect, url_for, send_file
+from flask import Flask, render_template, request, redirect, url_for, send_file, jsonify
 import mysql.connector
 from components.Model import *
 from PIL import Image
 import io
+import cv2
+import numpy as np
 
 app = Flask(__name__)
-# model = trainning_model()
+model = trainning_model()
+
 
 # MySQL Database configuration
 app.config['MYSQL_HOST'] = 'localhost'
@@ -76,29 +79,6 @@ def delete_subject():
     connection.close()
     return redirect('/')
 
-@app.route("/add_student")
-def add_student():
-    msv_arr = [2,4,2,2]
-    answer_arr = [-1, -1, 2, 2, -1, 4, 2, -1, 1, -1]
-    msv = ""
-    is_student_exist = False
-
-    for digit in msv_arr:
-        msv = msv + str(digit)
-
-    subject_id = request.args.get("id")
-    subject = execute_query("SELECT * FROM subjects WHERE id = %s", (subject_id,))
-    students = execute_query("SELECT * FROM students INNER JOIN enrollment ON students.id = enrollment.student_id WHERE enrollment.subject_id = %s", (subject_id,))
-
-    for student in students:
-        if msv == student['msv']:
-            is_student_exist  = True
-            break
-    
-    if is_student_exist == False:
-        new_student = execute_query("SELECT * FROM students WHERE msv = %s", (msv,))
-        execute_insert_query("INSERT INTO enrollment(subject_id, student_id, score) VALUES (%s, %s, %s)", (subject_id, new_student[0]['id'], 0))
-    return redirect("/detail?id=" + subject_id)
 
 @app.route("/detail")
 def render_detail_page():
@@ -152,40 +132,96 @@ def delete_student():
 @app.route('/uploadImg', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
-        return 'No file part', 400
-    
+        return 'No file part', 400  
+
     file = request.files['file']
-    
+    subject_id = request.form['subjectID']
+
     if file.filename == '':
         return 'No selected file', 400
-    
-    # Kiểm tra loại tệp hình ảnh
+
     if file and file.filename.lower().endswith(('png', 'jpg', 'jpeg', 'gif')):
         try:
-            # Đọc tệp vào bộ nhớ
+            # Đọc ảnh từ file upload
             img_data = file.read()
+            if not img_data:
+                return 'Uploaded file is empty', 400           
             
-            # Mở ảnh từ bộ nhớ
             img = Image.open(io.BytesIO(img_data))
-            
-            # Hiển thị ảnh bằng Pillow
-            img.show()  # Mở ảnh trong cửa sổ mặc định của hệ thống
 
-            # Xử lý và nhận diện với model
-            # identifier_img, answers_img = processing_img(img)
-            # result_identifiers, result_answers = handWritten_recog(model, answers_img, identifier_img)
-            # print(result_identifiers, result_answers, "  sadddddddddddddddddddd")
-            
-            return 'Image displayed successfully', 200
+            # Gọi hàm processing_img
+            identifier_img, answers_img = processing_img(img)
+
+            # Dự đoán bằng mô hình (comment lại nếu chưa muốn thực hiện)
+            result_identifiers, result_answers = handWritten_recog(model, answers_img, identifier_img)
+            print("Result identifier: " + str(result_identifiers))
+            print("Result answers: " + str(result_answers))
+
+            # Thêm học sinh
+            add_student(result_identifiers, result_answers, subject_id)
+
+            url = url_for('render_detail_page') + f"?id={subject_id}"
+            return redirect('/')
+
+
         except Exception as e:
-            # Bắt lỗi khi sử dụng model và in ra chi tiết lỗi
             error_message = f'Error during model processing: {str(e)}'
-            print(error_message)  # In lỗi ra console
-            return error_message, 500
+            print(error_message)
+            return jsonify({'error': error_message}), 500
+
+
+def add_student(msv_arr, answer_arr, subject_id):
+    msv = ""
+    is_student_exist = False
+
+    for digit in msv_arr:
+        msv = msv + str(digit)
+
+    print("MSV: ", msv)
+
+    subject = execute_query("SELECT * FROM subjects WHERE id = %s", (subject_id,))
+    students = execute_query("SELECT * FROM students INNER JOIN enrollment ON students.id = enrollment.student_id WHERE enrollment.subject_id = %s", (subject_id,))
+
+    for student in students:
+        if msv == student['msv']:
+            is_student_exist  = True
+            break
     
-    return 'Invalid file type', 400
+    print("Student not yet exist.")
+
+    if is_student_exist == False:
+        new_student = execute_query("SELECT * FROM students WHERE msv = %s", (msv,))
+        score = calculate_score(answer_arr, subject[0])
+        execute_insert_query("INSERT INTO student_answer(q_1, q_2, q_3, q_4, q_5, q_6, q_7, q_8, q_9, q_10, student_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
+                             (answer_arr[0], answer_arr[1], answer_arr[2], answer_arr[3], answer_arr[4], answer_arr[5], answer_arr[6], answer_arr[7], answer_arr[8], answer_arr[9], new_student[0]['id']))
+        execute_insert_query("INSERT INTO enrollment(subject_id, student_id, score) VALUES (%s, %s, %s)", (subject_id, new_student[0]['id'], score))
 
 
+def calculate_score(answer_arr, subject):
+    score = 0
+    correct_answer = []
+    for i in range(1,11):
+        if subject[f"q_{i}"] == "A":
+            correct_answer.append(1)
+        elif subject[f"q_{i}"] == "B":
+            correct_answer.append(2)
+        elif subject[f"q_{i}"] == "C":
+            correct_answer.append(3)
+        else:
+            correct_answer.append(4)
+
+    print("CORRECT ANSWER ARRAY UPDATED", correct_answer)
+
+    for i in range(0, 10):
+        if answer_arr[i] != -1:
+            if answer_arr[i] == correct_answer[i]:
+                score += 1
+
+    
+    if score < 0:
+        score = 0
+
+    return score
 
 def execute_query(query, params=None):
     """
