@@ -134,6 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
   submitButton.addEventListener("click", function () {
     if (fileInput.files.length > 0) {
       const file = fileInput.files[0];
+      const subjectID = submitButton.dataset.subject;
       fileInput.value = "";
       uploadBox.innerHTML = "<p>Drag or Drop Student's Exam Here!</p>";
       submitButton.disabled = true;
@@ -143,6 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("Selected file:", file.name);
       const formData = new FormData();
       formData.append('file', file);
+      formData.append('subjectID', subjectID);
       
       fetch("/uploadImg", {
         method: "POST",

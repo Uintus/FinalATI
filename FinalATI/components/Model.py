@@ -80,10 +80,19 @@ def training_model():
     X_test = X_test/255
 
     # set LAYERS
-    model = keras.Sequential([
-        keras.layers.Conv2D(4, (3, 3), activation='relu', input_shape=(28, 28, 1)),  # Lớp tích chập với chỉ 4 filters
-        keras.layers.Flatten(),                                                      # Chuyển đổi thành vector 1D
-        keras.layers.Dense(10, activation='softmax')                                 # Lớp đầu ra trực tiếp với 10 nodes
+    # model = keras.Sequential([
+    #     keras.layers.Conv2D(4, (3, 3), activation='relu', input_shape=(28, 28, 1)),  # Lớp tích chập với chỉ 4 filters
+    #     keras.layers.Flatten(),                                                      # Chuyển đổi thành vector 1D
+    #     keras.layers.Dense(10, activation='softmax')                                 # Lớp đầu ra trực tiếp với 10 nodes
+    # ])
+    model = tf.keras.Sequential([
+    tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+    tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+    tf.keras.layers.Flatten(),  # Chuyển thành vector 1 chiều
+    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dense(10, activation='softmax')  # 10 lớp phân loại
     ])
 
     # OPTIMIZE loss funtion
@@ -101,65 +110,132 @@ def training_model():
 
     return model
 
+#_________________________________________MAIN FOR FROCESSING IMG__________________________________________#
+# import tensorflow as tf
+# import numpy as np
 
-
-# Function to process the image
-def processing_img(image):
-    if image is None:
-        raise ValueError("Input image is None.")
-    # Convert the image from Pillow to NumPy
-    image = np.array(image)
+# def processing_img(image):
+#     image = np.array(image)
     
-    # url
-    # image = cv2.imread(image)
+#     # Định nghĩa vùng để cắt ảnh cho identifier và answer
+#     std_Identifier = [[1332, 290, 70, 80], [1418, 290, 70, 80], [1500, 290, 70, 80], [1583, 290, 70, 80]]
+#     std_answers = [[620, 470, 70, 80], [620, 570, 70, 80], [620, 670, 70, 80], [620, 770, 70, 80], [620, 870, 70, 80],
+#                    [1160, 470, 70, 80], [1160, 570, 70, 80], [1160, 670, 70, 80], [1160, 770, 70, 80], [1160, 870, 70, 80]]
+    
+#     identifier_img = []
+#     answers_img = []
 
-    # Positions of the answers and ID
+#     # Cắt và xử lý từng vùng ảnh cho identifier
+#     for region in std_Identifier:
+#         x, y, width, height = region
+#         cropped = crop_answer(x, y, width, height, image)  # Hàm crop ảnh của bạn
+#         processed = process_answer(cropped)  # Hàm xử lý ảnh của bạn
+#         identifier_img.append(processed)
+
+#     # Cắt và xử lý từng vùng ảnh cho answer
+#     for region in std_answers:
+#         x, y, width, height = region
+#         cropped = crop_answer(x, y, width, height, image)
+#         processed = process_answer(cropped)
+#         answers_img.append(processed)
+
+#     # Resize các ảnh về kích thước (28, 28)
+#     identifier_img = [tf.image.resize(img, (28, 28)) for img in identifier_img]
+#     answers_img = [tf.image.resize(img, (28, 28)) for img in answers_img]
+
+#     # Chuyển ảnh thành grayscale nếu chưa có
+#     identifier_img = tf.image.rgb_to_grayscale(identifier_img)
+#     answers_img = tf.image.rgb_to_grayscale(answers_img)
+
+#     # Thêm chiều kênh duy nhất (1) nếu cần
+#     identifier_img = identifier_img[..., tf.newaxis]  # Thêm chiều kênh vào ảnh
+#     answers_img = answers_img[..., tf.newaxis]  # Thêm chiều kênh vào ảnh
+
+#     # Chuyển danh sách ảnh thành tensor
+#     identifier_img = tf.stack(identifier_img)  # Tensor: (batch_size, 28, 28, 1)
+#     answers_img = tf.stack(answers_img)        # Tensor: (batch_size, 28, 28, 1)
+
+#     # Normalize giá trị về khoảng 0-1
+#     identifier_img = tf.cast(identifier_img, tf.float32) / 255.0
+#     answers_img = tf.cast(answers_img, tf.float32) / 255.0
+
+#     # Debug kích thước tensor
+#     print("Identifier Tensor Shape:", identifier_img.shape)  # Kết quả: (batch_size, 28, 28, 1)
+#     print("Answers Tensor Shape:", answers_img.shape)        # Kết quả: (batch_size, 28, 28, 1)
+
+#     return identifier_img, answers_img
+
+def processing_img(image):
+    image = np.array(image)
+
+    # Định nghĩa vùng để cắt ảnh cho identifier và answer
     std_Identifier = [[1332, 290, 70, 80], [1418, 290, 70, 80], [1500, 290, 70, 80], [1583, 290, 70, 80]]
     std_answers = [[620, 470, 70, 80], [620, 570, 70, 80], [620, 670, 70, 80], [620, 770, 70, 80], [620, 870, 70, 80],
                    [1160, 470, 70, 80], [1160, 570, 70, 80], [1160, 670, 70, 80], [1160, 770, 70, 80], [1160, 870, 70, 80]]
+
     identifier_img = []
     answers_img = []
 
-    if image is None:
-        print("Wrong path img!")
-    else:
-        for eln in std_Identifier:
-            x, y, width, height = eln
-            answer = crop_answer(x, y, width, height, image)
-            result = process_answer(answer)
-            identifier_img.append(result)
+    # Cắt và xử lý từng vùng ảnh cho identifier
+    for region in std_Identifier:
+        x, y, width, height = region
+        cropped = crop_answer(x, y, width, height, image)
+        processed = process_answer(cropped)
+        processed = cv2.resize(processed, (28, 28))
+        print("Processed image shape:", processed.shape)
+        processed_gray = cv2.cvtColor(processed, cv2.COLOR_RGBA2GRAY)
+        reshaped_pocessed = processed_gray.reshape((28,28,1))
+        print("Processed image after reshape:", reshaped_pocessed.shape)
+        identifier_img.append(reshaped_pocessed)
+    
+    # Cắt và xử lý từng vùng ảnh cho answer
+    for region in std_answers:
+        x, y, width, height = region
+        cropped = crop_answer(x, y, width, height, image)
+        processed = process_answer(cropped)
+        processed = cv2.resize(processed, (28, 28))  # Resize về kích thước (28, 28)
+        print("Processed image shape:", processed.shape)
+        processed_gray = cv2.cvtColor(processed, cv2.COLOR_RGBA2GRAY)
+        reshaped_pocessed = processed_gray.reshape((28,28,1))
+        print("Processed image after reshape:", reshaped_pocessed.shape)
+        answers_img.append(reshaped_pocessed)
 
-        for eln in std_answers:
-            x, y, width, height = eln
-            answer = crop_answer(x, y, width, height, image)
-            result = process_answer(answer)
-            answers_img.append(result)
+    # print("Before converting to array:")
+    # print("Identifier elements:", len(identifier_img))
+    # print("Answers elements:", len(answers_img))
 
-    # Resize imgs for fitting model
-    resized_identifier = [tf.image.resize(img, (28, 28)) for img in identifier_img]
-    identifier_img = tf.stack(resized_identifier)  # Chuyển đổi danh sách thành tensor
-    resized_answers = [tf.image.resize(img, (28, 28)) for img in answers_img]
-    answers_img = tf.stack(resized_answers)  # Chuyển đổi danh sách thành tensor
+    # # Chuyển đổi và kiểm tra lại
+    # identifier_img_array = np.array(identifier_img).reshape(-1, 28, 28, 1)
+    # answers_img_array = np.array(answers_img).reshape(-1, 28, 28, 1)
 
-    # change range from 0-255 -> 0-1
-    identifier_img = tf.cast(identifier_img, tf.float32) / 255.0
-    answers_img = tf.cast(answers_img, tf.float32) / 255.0
+    # print("After converting to array:")
+    # print("Identifier shape:", identifier_img_array.shape)
+    # print("Answers shape:", answers_img_array.shape)
 
-    # Change type of img from RGB to grayscale
-    identifier_img = tf.image.rgb_to_grayscale(identifier_img)
-    answers_img = tf.image.rgb_to_grayscale(answers_img)
-
+    # Chuyển danh sách ảnh thành tensor và thêm chiều kênh
+    identifier_img = np.array(identifier_img) / 255.0  # Normalize
+    answers_img = np.array(answers_img) / 255.0  # Normalize
 
     return identifier_img, answers_img
 
 
 
 
-# Function to recognize handwritten answers
+
+
+
+#_________________________________________MAIN FOR HANDWRITTEN RECOGNIZE=ANSWER+ID__________________________________________#
 def handwritten_recog(model, answers_img, identifier_img):
-    # Use model with data from user
-    result_identifiers = predict_id(identifier_img, model)
-    result_answers = predict_ans(answers_img, model)    
+    # USE model with data from user
+    # plt.matshow(answers_img[7])
+    # plt.show()
+    # y_predicted = model.predict(answers_img)
+    # print(y_predicted[7])
+    result_identifiers=predict_id(identifier_img, model)
+    result_answers=predict_ans(answers_img, model)
+
+    print([result_identifiers, result_answers])
+    
     return result_identifiers, result_answers
 
 
