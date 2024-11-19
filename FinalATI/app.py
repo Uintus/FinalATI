@@ -136,7 +136,8 @@ def upload_file():
 
     file = request.files['file']
     subject_id = request.form['subjectID']
-
+    print(subject_id + " sdID")
+    
     if file.filename == '':
         return 'No selected file', 400
 
@@ -159,9 +160,11 @@ def upload_file():
 
             # Thêm học sinh
             add_student(result_identifiers, result_answers, subject_id)
-
+            print("Add student success")
+            
             url = url_for('render_detail_page') + f"?id={subject_id}"
-            return redirect('/')
+            return jsonify({'redirect_url': url})
+
 
 
         except Exception as e:

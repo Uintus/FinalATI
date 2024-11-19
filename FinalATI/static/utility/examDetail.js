@@ -33,37 +33,49 @@ function handleShowPopup() {
 }
 
 function handleRemoveExam(id, subject_id) {
-  window.location.href = "/delete_student_from_subject?id=" + id + '&subject_id=' + subject_id;
+  window.location.href =
+    "/delete_student_from_subject?id=" + id + "&subject_id=" + subject_id;
 }
 
 // __________________________HANDLE SEARCH DATA___________________________
 // Lấy các phần tử cần sử dụng
-const searchInput = document.querySelector('.stdExam__search input');
-const tableRows = document.querySelectorAll('.stdExam__table tbody tr');
+const searchInput = document.querySelector(".stdExam__search input");
+const tableRows = document.querySelectorAll(".stdExam__table tbody tr");
 
 // Lắng nghe sự kiện nhập từ bàn phím
-searchInput.addEventListener('input', function () {
-    const searchValue = searchInput.value.trim().toLowerCase();
+searchInput.addEventListener("input", function () {
+  const searchValue = searchInput.value.trim().toLowerCase();
 
-    // Duyệt qua từng dòng trong bảng
-    tableRows.forEach(row => {
-        // Lấy giá trị từ các cột ID, Name, và Class
-        const studentID = row.querySelector('td:nth-child(2)').textContent.trim().toLowerCase();
-        const studentName = row.querySelector('td:nth-child(3)').textContent.trim().toLowerCase();
-        const studentClass = row.querySelector('td:nth-child(4)').textContent.trim().toLowerCase();
+  // Duyệt qua từng dòng trong bảng
+  tableRows.forEach((row) => {
+    // Lấy giá trị từ các cột ID, Name, và Class
+    const studentID = row
+      .querySelector("td:nth-child(2)")
+      .textContent.trim()
+      .toLowerCase();
+    const studentName = row
+      .querySelector("td:nth-child(3)")
+      .textContent.trim()
+      .toLowerCase();
+    const studentClass = row
+      .querySelector("td:nth-child(4)")
+      .textContent.trim()
+      .toLowerCase();
 
-        // Kiểm tra nếu bất kỳ cột nào chứa chuỗi tìm kiếm
-        if (studentID.includes(searchValue) || studentName.includes(searchValue) || studentClass.includes(searchValue)) {
-            // Nếu có, hiển thị dòng
-            row.style.display = '';
-        } else {
-            // Nếu không, ẩn dòng
-            row.style.display = 'none';
-        }
-    });
+    // Kiểm tra nếu bất kỳ cột nào chứa chuỗi tìm kiếm
+    if (
+      studentID.includes(searchValue) ||
+      studentName.includes(searchValue) ||
+      studentClass.includes(searchValue)
+    ) {
+      // Nếu có, hiển thị dòng
+      row.style.display = "";
+    } else {
+      // Nếu không, ẩn dòng
+      row.style.display = "none";
+    }
+  });
 });
-
-
 
 // __________________________HANDLE SUBMIT FILE___________________________
 
@@ -143,13 +155,20 @@ document.addEventListener("DOMContentLoaded", function () {
       //----------------Received File here!!!-------------------
       console.log("Selected file:", file.name);
       const formData = new FormData();
-      formData.append('file', file);
-      formData.append('subjectID', subjectID);
-      
+      formData.append("file", file);
+      formData.append("subjectID", subjectID);
+
       fetch("/uploadImg", {
         method: "POST",
         body: formData,
       })
+        .then((response) => response.json()) // Chuyển đổi response thành JSON
+        .then((data) => {
+          if (data.redirect_url) {
+            window.location.href = data.redirect_url; // Redirect tới URL từ BE
+          }
+        })
+
         .then(() => {
           console.log("Send to BE successfully");
         })
