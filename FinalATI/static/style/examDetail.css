@@ -55,9 +55,12 @@
 .item_box:last-child i {
   padding-right: 30px;
 }
-.item_box span {
+.item_box a{
   font-size: 20px;
+  color: white !important;
+  text-decoration: none;
 }
+
 
 /* ___________________CONTENT PART_________________ */
 .content {
