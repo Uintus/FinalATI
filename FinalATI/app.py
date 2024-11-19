@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 
 app = Flask(__name__)
-model = trainning_model()
+model = training_model()
 
 
 # MySQL Database configuration
@@ -136,7 +136,8 @@ def upload_file():
 
     file = request.files['file']
     subject_id = request.form['subjectID']
-
+    print(subject_id + " sdID")
+    
     if file.filename == '':
         return 'No selected file', 400
 
@@ -158,7 +159,7 @@ def upload_file():
             identifier_img, answers_img = processing_img(img)
 
             # Dự đoán bằng mô hình (comment lại nếu chưa muốn thực hiện)
-            result_identifiers, result_answers = handWritten_recog(model, answers_img, identifier_img)
+            result_identifiers, result_answers = handwritten_recog(model, answers_img, identifier_img)
             print("Result identifier: " + str(result_identifiers))
             print("Result answers: " + str(result_answers))
 
@@ -166,6 +167,7 @@ def upload_file():
             add_student(result_identifiers, result_answers, subject_id)
 
             return jsonify({'fetchStatus': True})
+
 
 
         except Exception as e:
