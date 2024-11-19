@@ -3,9 +3,24 @@ import mysql.connector
 from components.Model import *
 from PIL import Image
 import io
+import numpy as np
 
 app = Flask(__name__)
-# model = trainning_model()
+model = training_model()
+
+def preprocess_image(image):
+    # Chuyển sang ảnh xám
+    img = image.convert('L')
+    # Thay đổi kích thước về 28x28
+    img = img.resize((28, 28))
+    # Chuyển đổi thành mảng numpy
+    img_array = np.array(img)
+    # Chuẩn hóa giá trị pixel
+    img_array = img_array / 255.0
+    # Thay đổi kích thước để phù hợp với đầu vào của mô hình
+    img_array = img_array.reshape(1, 28, 28, 1)  # (1, 28, 28, 1) cho mô hình CNN
+    return img_array
+
 
 # MySQL Database configuration
 app.config['MYSQL_HOST'] = 'localhost'
@@ -170,11 +185,15 @@ def upload_file():
             
             # Hiển thị ảnh bằng Pillow
             img.show()  # Mở ảnh trong cửa sổ mặc định của hệ thống
-
+            
+            # Tiền xử lý ảnh
+            processed_img = preprocess_image(img)
             # Xử lý và nhận diện với model
-            # identifier_img, answers_img = processing_img(img)
-            # result_identifiers, result_answers = handWritten_recog(model, answers_img, identifier_img)
-            # print(result_identifiers, result_answers, "  sadddddddddddddddddddd")
+            identifier_img, answers_img = processing_img(processed_img)
+            result_identifiers, result_answers = handwritten_recog(model, answers_img, identifier_img)
+            print(result_identifiers, result_answers, "  sadddddddddddddddddddd")
+            # print("The file from user: ------------------")
+            # print_image_info2(img)
             
             return 'Image displayed successfully', 200
         except Exception as e:
