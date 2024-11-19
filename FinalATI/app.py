@@ -149,6 +149,11 @@ def upload_file():
             
             img = Image.open(io.BytesIO(img_data))
 
+            # Resize lại ảnh
+            target_size = (1772, 1181)
+            if img.size != target_size:
+                img = img.resize(target_size)
+
             # Gọi hàm processing_img
             identifier_img, answers_img = processing_img(img)
 
@@ -160,14 +165,13 @@ def upload_file():
             # Thêm học sinh
             add_student(result_identifiers, result_answers, subject_id)
 
-            url = url_for('render_detail_page') + f"?id={subject_id}"
-            return redirect('/')
+            return jsonify({'fetchStatus': True})
 
 
         except Exception as e:
             error_message = f'Error during model processing: {str(e)}'
             print(error_message)
-            return jsonify({'error': error_message}), 500
+            return jsonify({'error': error_message, 'fetchStatus': False})
 
 
 def add_student(msv_arr, answer_arr, subject_id):
@@ -222,6 +226,7 @@ def calculate_score(answer_arr, subject):
         score = 0
 
     return score
+
 
 def execute_query(query, params=None):
     """

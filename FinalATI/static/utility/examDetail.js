@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  submitButton.addEventListener("click", function () {
+  submitButton.addEventListener("click", async function () {
     if (fileInput.files.length > 0) {
       const file = fileInput.files[0];
       const subjectID = submitButton.dataset.subject;
@@ -146,16 +146,19 @@ document.addEventListener("DOMContentLoaded", function () {
       formData.append('file', file);
       formData.append('subjectID', subjectID);
       
-      fetch("/uploadImg", {
+      const result = await fetch("/uploadImg", {
         method: "POST",
         body: formData,
-      })
-        .then(() => {
-          console.log("Send to BE successfully");
-        })
-        .catch((error) => {
-          console.log("Error uploading the file:", error);
-        });
+      });
+      if (!result.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const dataFetch = await result.json();
+      if (dataFetch.fetchStatus == true) {
+        window.location.href = "/detail?id=" + subjectID;
+      }else{
+        console.log(dataFetch.error)
+      }
     }
   });
 });
