@@ -314,6 +314,13 @@ td {
   font-weight: bold;
 }
 
+.content__upload .submit-result {
+  position: absolute;
+  top: 1px;
+  color: red;
+  font-size: 11px;
+  /* padding-top: 1px; */
+}
 
 
 

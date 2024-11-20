@@ -5,7 +5,6 @@ from tensorflow import keras
 import matplotlib.pyplot as plt
 from flask import Flask, request
 from PIL import Image
-import io
 
 app = Flask(__name__)
 
@@ -110,60 +109,7 @@ def training_model():
 
     return model
 
-#_________________________________________MAIN FOR FROCESSING IMG__________________________________________#
-# import tensorflow as tf
-# import numpy as np
-
-# def processing_img(image):
-#     image = np.array(image)
-    
-#     # Định nghĩa vùng để cắt ảnh cho identifier và answer
-#     std_Identifier = [[1332, 290, 70, 80], [1418, 290, 70, 80], [1500, 290, 70, 80], [1583, 290, 70, 80]]
-#     std_answers = [[620, 470, 70, 80], [620, 570, 70, 80], [620, 670, 70, 80], [620, 770, 70, 80], [620, 870, 70, 80],
-#                    [1160, 470, 70, 80], [1160, 570, 70, 80], [1160, 670, 70, 80], [1160, 770, 70, 80], [1160, 870, 70, 80]]
-    
-#     identifier_img = []
-#     answers_img = []
-
-#     # Cắt và xử lý từng vùng ảnh cho identifier
-#     for region in std_Identifier:
-#         x, y, width, height = region
-#         cropped = crop_answer(x, y, width, height, image)  # Hàm crop ảnh của bạn
-#         processed = process_answer(cropped)  # Hàm xử lý ảnh của bạn
-#         identifier_img.append(processed)
-
-#     # Cắt và xử lý từng vùng ảnh cho answer
-#     for region in std_answers:
-#         x, y, width, height = region
-#         cropped = crop_answer(x, y, width, height, image)
-#         processed = process_answer(cropped)
-#         answers_img.append(processed)
-
-#     # Resize các ảnh về kích thước (28, 28)
-#     identifier_img = [tf.image.resize(img, (28, 28)) for img in identifier_img]
-#     answers_img = [tf.image.resize(img, (28, 28)) for img in answers_img]
-
-#     # Chuyển ảnh thành grayscale nếu chưa có
-#     identifier_img = tf.image.rgb_to_grayscale(identifier_img)
-#     answers_img = tf.image.rgb_to_grayscale(answers_img)
-
-#     # Thêm chiều kênh duy nhất (1) nếu cần
-#     identifier_img = identifier_img[..., tf.newaxis]  # Thêm chiều kênh vào ảnh
-#     answers_img = answers_img[..., tf.newaxis]  # Thêm chiều kênh vào ảnh
-
-#     # Chuyển danh sách ảnh thành tensor
-#     identifier_img = tf.stack(identifier_img)  # Tensor: (batch_size, 28, 28, 1)
-#     answers_img = tf.stack(answers_img)        # Tensor: (batch_size, 28, 28, 1)
-
-#     # Normalize giá trị về khoảng 0-1
-#     identifier_img = tf.cast(identifier_img, tf.float32) / 255.0
-#     answers_img = tf.cast(answers_img, tf.float32) / 255.0
-
-#     # Debug kích thước tensor
-#     print("Identifier Tensor Shape:", identifier_img.shape)  # Kết quả: (batch_size, 28, 28, 1)
-#     print("Answers Tensor Shape:", answers_img.shape)        # Kết quả: (batch_size, 28, 28, 1)
-
-#     return identifier_img, answers_img
+#_________________________________________MAIN FOR FROCESSING IMG__________________________________________
 
 def processing_img(image):
     image = np.array(image)
@@ -218,12 +164,6 @@ def processing_img(image):
 
     return identifier_img, answers_img
 
-
-
-
-
-
-
 #_________________________________________MAIN FOR HANDWRITTEN RECOGNIZE=ANSWER+ID__________________________________________#
 def handwritten_recog(model, answers_img, identifier_img):
     # USE model with data from user
@@ -240,56 +180,4 @@ def handwritten_recog(model, answers_img, identifier_img):
 
 
 
-# import os
-# from PIL import Image
-
-# def print_image_info(image_path):
-#     if not os.path.isfile(image_path):
-#         print("Đường dẫn không hợp lệ. Vui lòng cung cấp một đường dẫn file hợp lệ.")
-#         return
-
-#     try:
-#         # Mở ảnh bằng Pillow
-#         img = Image.open(image_path)
-
-#         # In ra thông số của ảnh
-#         print(f"Định dạng: {img.format}")
-#         print(f"Kích thước: {img.size} (Rộng x Cao)")
-#         print(f"Màu sắc: {img.mode}")
-#         print(f"Chiều rộng: {img.width} pixels")
-#         print(f"Chiều cao: {img.height} pixels")
-#         print(f"Thông tin DPI: {img.info.get('dpi', 'Không có thông tin')}")
-#         print(f"Độ sâu màu: {img.getbands()}")
-
-#     except Exception as e:
-#         print(f"Có lỗi xảy ra: {e}")
-
-# def print_image_info2(img):
-#     # In ra thông số của ảnh
-#     print(f"Định dạng: {img.format}")
-#     print(f"Kích thước: {img.size} (Rộng x Cao)")
-#     print(f"Màu sắc: {img.mode}")
-#     print(f"Chiều rộng: {img.width} pixels")
-#     print(f"Chiều cao: {img.height} pixels")
-#     print(f"Thông tin DPI: {img.info.get('dpi', 'Không có thông tin')}")
-#     print(f"Độ sâu màu: {img.getbands()}")
-# # Ví dụ sử dụng
-# image_path = "components/answersheet.png"  # Thay đổi đường dẫn đến file ảnh của bạn
-# print("original: ------------------")
-# print_image_info(image_path)
-
-
-
-
-
-
-
-
-
-
-
-
-
 __all__ = ["training_model", "processing_img", "handwritten_recog"]
-# __all__ = ["training_model", "processing_img", "handwritten_recog", "print_image_info2"]
-# __all__ = ["processing_img", "handwritten_recog", "print_image_info2"]
